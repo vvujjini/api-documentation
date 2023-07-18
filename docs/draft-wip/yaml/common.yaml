@@ -863,7 +863,7 @@ components:
           type: array
           items:
             - $ref: './common.yaml#/components/schemas/Relationship'
-        contactno:
+        phone_number:
           type: array
           items:
             $ref: './common.yaml#/components/schemas/ContactDetails'

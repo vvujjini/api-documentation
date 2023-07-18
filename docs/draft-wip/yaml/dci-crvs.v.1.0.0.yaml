@@ -164,17 +164,19 @@ paths:
               $ref: './common.yaml#/components/schemas/FileUploadRequest'
         required: true
       responses:
-        '200':
+        'default':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: './responses.yaml#/components/schemas/ApiResponse'          
+                $ref: './responses.yaml#/components/schemas/ApiResponseMessage'     
             application/xml:
               schema:
-                $ref: './responses.yaml#/components/schemas/ApiResponse'
-        '201':
-          $ref: './responses.yaml#/components/responses/201'
+                $ref: './responses.yaml#/components/schemas/ApiResponseMessage'
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary  
         '202':
           $ref: './responses.yaml#/components/responses/202'
         '400':
