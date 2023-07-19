@@ -286,10 +286,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './req-status.yaml#/components/schemas/RequestStatusCheckRequest'
+              $ref: '#/components/schemas/RequestStatusCheckRequest'
           application/xml:
             schema:
-              $ref: './req-status.yaml#/components/schemas/RequestStatusCheckRequest'                   
+              $ref: '#/components/schemas/RequestStatusCheckRequest'                   
           multipart/form-data:
             schema:
               $ref: './common.yaml#/components/schemas/FileUploadRequest'
@@ -300,10 +300,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './req-status.yaml#/components/schemas/RequestStatusCheckResponse'          
+                $ref: '#/components/schemas/RequestStatusCheckResponse'          
             application/xml:
               schema:
-                $ref: './req-status.yaml#/components/schemas/RequestStatusCheckResponse'     
+                $ref: '#/components/schemas/RequestStatusCheckResponse'     
             application/octet-stream:
               schema:
                 type: string
@@ -447,7 +447,6 @@ components:
             - $ref: './headers.yaml#/components/schemas/CommonHeaders'
             - $ref: './headers.yaml#/components/schemas/OnSearchAction'
             - $ref: './headers.yaml#/components/schemas/TotalCountHeader'
-            - $ref: './headers.yaml#/components/schemas/CompletedCountHeader'  
             - $ref: './headers.yaml#/components/schemas/EncHeaders' 
         message: 
           type: object
@@ -491,6 +490,47 @@ components:
       required:
         - transaction_id
         - notify_event
+    RequestStatusCheckRequest:
+      type: object
+      properties:
+        signature:
+          allOf:
+            - $ref: './signature.yaml#/components/schemas/MsgSignature'      
+        headers:
+          allOf:
+            - $ref: './headers.yaml#/components/schemas/CommonHeaders'
+            - $ref: './headers.yaml#/components/schemas/StatusAction'
+            - $ref: './headers.yaml#/components/schemas/TotalCountHeader'
+            - $ref: './headers.yaml#/components/schemas/EncHeaders'
+        message: 
+          type: object
+          anyOf:
+            - $ref: './req-status.yaml#/components/schemas/RequestStatusCheckMessage'
+            - $ref: './common.yaml#/components/schemas/EncryptedRequest'     
+      required:
+        - headers
+        - message 
+    RequestStatusCheckResponse:
+      type: object
+      description: '.'
+      properties:
+        signature:
+          allOf:
+            - $ref: './signature.yaml#/components/schemas/MsgSignature'      
+        headers:
+          allOf:
+            - $ref: './headers.yaml#/components/schemas/CommonHeaders'
+            - $ref: './headers.yaml#/components/schemas/OnStatusAction'
+            - $ref: './headers.yaml#/components/schemas/TotalCountHeader'
+            - $ref: './headers.yaml#/components/schemas/EncHeaders'
+        message: 
+          type: object
+          anyOf:
+            - $ref: './req-status.yaml#/components/schemas/StatusCheckMessageResponse'
+            - $ref: './common.yaml#/components/schemas/EncryptedRequest'     
+      required:
+        - headers
+        - message   
   securitySchemes:
     x-access-token:
       type: http

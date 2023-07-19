@@ -75,6 +75,7 @@ components:
           enum: ['received','processing','processed','failed','invalid_request_id']
     RequestStatusCheckResponse:
       type: object
+      description: '.'
       properties:
         signature:
           allOf:
@@ -86,8 +87,6 @@ components:
             - $ref: './headers.yaml#/components/schemas/TotalCountHeader'
             - $ref: './headers.yaml#/components/schemas/CompletedCountHeader'
             - $ref: './headers.yaml#/components/schemas/EncHeaders'
-            - $ref: './headers.yaml#/components/schemas/AsyncHeaders'
-            - $ref: './headers.yaml#/components/schemas/OnStatusMsgHeader'
         message: 
           type: object
           anyOf:

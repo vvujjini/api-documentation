@@ -593,6 +593,7 @@ components:
       required:
         - transaction_id
         - notify_event
+
   securitySchemes:
     x-access-token:
       type: http
