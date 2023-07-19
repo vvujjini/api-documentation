@@ -437,6 +437,8 @@ components:
             - $ref: './headers.yaml#/components/schemas/SearchAction'
             - $ref: './headers.yaml#/components/schemas/TotalCountHeader'
             - $ref: './headers.yaml#/components/schemas/EncHeaders'
+            - $ref: './headers.yaml#/components/schemas/AsyncHeaders'      
+            - $ref: './headers.yaml#/components/schemas/SearchCallbackHeader' 
         message:
           type: object
           description: 'The search data using which search to be performed'
