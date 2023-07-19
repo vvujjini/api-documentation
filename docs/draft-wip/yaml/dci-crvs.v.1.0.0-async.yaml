@@ -335,10 +335,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './req-status.yaml#/components/schemas/RequestStatusCheckRequest'
+              $ref: '#/components/schemas/RequestStatusCheckRequest'
           application/xml:
             schema:
-              $ref: './req-status.yaml#/components/schemas/RequestStatusCheckRequest'                   
+              $ref: '#/components/schemas/RequestStatusCheckRequest'                   
           multipart/form-data:
             schema:
               $ref: './common.yaml#/components/schemas/FileUploadRequest'
@@ -435,7 +435,6 @@ components:
             - $ref: './headers.yaml#/components/schemas/SearchAction'
             - $ref: './headers.yaml#/components/schemas/TotalCountHeader'
             - $ref: './headers.yaml#/components/schemas/EncHeaders'
-            - $ref: './headers.yaml#/components/schemas/AsyncHeaders'      
             - $ref: './headers.yaml#/components/schemas/SearchCallbackHeader' 
         message:
           type: object
@@ -593,7 +592,27 @@ components:
       required:
         - transaction_id
         - notify_event
-
+    RequestStatusCheckRequest:
+      type: object
+      properties:
+        signature:
+          allOf:
+            - $ref: './signature.yaml#/components/schemas/MsgSignature'      
+        headers:
+          allOf:
+            - $ref: './headers.yaml#/components/schemas/CommonHeaders'
+            - $ref: './headers.yaml#/components/schemas/StatusAction'
+            - $ref: './headers.yaml#/components/schemas/TotalCountHeader'
+            - $ref: './headers.yaml#/components/schemas/EncHeaders'
+            - $ref: './headers.yaml#/components/schemas/OnStatusMsgHeader'
+        message: 
+          type: object
+          anyOf:
+            - $ref: './req-status.yaml#/components/schemas/RequestStatusCheckMessage'
+            - $ref: './common.yaml#/components/schemas/EncryptedRequest'     
+      required:
+        - headers
+        - message 
   securitySchemes:
     x-access-token:
       type: http

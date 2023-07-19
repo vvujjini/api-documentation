@@ -12,7 +12,6 @@ components:
             - $ref: './headers.yaml#/components/schemas/StatusAction'
             - $ref: './headers.yaml#/components/schemas/TotalCountHeader'
             - $ref: './headers.yaml#/components/schemas/EncHeaders'
-            - $ref: './headers.yaml#/components/schemas/AsyncHeaders'
             - $ref: './headers.yaml#/components/schemas/OnStatusMsgHeader'
         message: 
           type: object
