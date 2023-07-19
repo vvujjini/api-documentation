@@ -168,10 +168,6 @@ paths:
             application/json:
               schema: 
                 $ref: "./common.yaml#/components/schemas/CREventType"
-#                type: array
-#                example: ["BIRTH_REGISTRATION", "DEATH_REGISTRATION","MARRIAGE_REGISTRATION","DIVORCE_REGISTRATION","DEMOGRAPHIC_UPDATE"]
-#                items:
-#                  type: string     
       security:
         - x-access-token:
             - read:search

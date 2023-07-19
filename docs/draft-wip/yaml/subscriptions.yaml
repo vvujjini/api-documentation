@@ -9,8 +9,9 @@ components:
           allOf:
             - $ref: './headers.yaml#/components/schemas/CommonHeaders'
             - $ref: './headers.yaml#/components/schemas/SubscribeAction'
-            - $ref: './headers.yaml#/components/schemas/EncHeaders'            
-            - $ref: './headers.yaml#/components/schemas/NotifyCallbackHeader'
+            - $ref: './headers.yaml#/components/schemas/EncHeaders'     
+            - $ref: './headers.yaml#/components/schemas/AsyncHeaders'    
+            - $ref: './headers.yaml#/components/schemas/SearchCallbackHeader'                  
           properties:
             action:
               enum:
