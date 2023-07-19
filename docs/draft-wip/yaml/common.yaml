@@ -184,31 +184,19 @@ components:
                              
     Identifier:
       type: object
-      description: "Refer code directory for supported identifier. The Code from data directory should be in identifier_type <br> 1. Beneficiary id is case insensitve normative represenation
-        as id-type:id@provider <br> 2. This will enumerate foundational and functioanl
-        id's to easily resolvable addressess <br> 3. This property is intended to
-        unambiguously refer to an object, such as a person, organization, etc., <br>
-        4. Few examples: <br> - id@identifier-type.id-provider e.g token:12345@mosip,
-        vid:12345@philid <br> - id@civil-registry.issuing-agency e.g id:12345@rwanda,
-        id:12345@ejanma.karnataka <br> - id@functional-identifier.issuing-agency e.g
-        id:12345@voter.Rwanda, id:12345@DL.karnataka, mobile:12345@fruits.karnataka
-        <br> Note: id provider should be made configurable and solutions should adapt
-        to the local jurisdiction and policies.<br> e.g fruits.karnataka represents
-        farmer registry in karnataka state govt.<br>"
-      format: "^[a-zA-Z0-9.-]+@[a-zA-Z0-9.-]+$"
+      description: ''
       properties:
         identifier_type:
           type: string
           example: ''
-          enum: "NATIONAL_ID"
         identifier_value:
           type: string
           example: ''
     Identifiers:
       type: array
-      description: ''
+      description: 'Identifier have two attribute 1) identifier_type 2) identifier_value. Please refer code directory to get supported identifier <link>'
       items:
-        - $ref: '#/components/schemas/Identifier'          
+        $ref: '#/components/schemas/Identifier'          
     TransactionId:
       type: string
       example: ''
@@ -434,7 +422,7 @@ components:
             or contractual agreements within which the parties are operating. When
             true, the phone_number Claim MUST be in E.164 format and any extensions
             MUST be represented in RFC 3966 format.
-          type: string
+          type: boolean
           example: ''
         
         address:
