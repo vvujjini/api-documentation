@@ -126,10 +126,10 @@ components:
         - is_encrypted 
     AsyncHeaders:
       type: object
-      description: Message header
+      description: The async header indicate that API expect response in async manner
       properties:
         async:
-          description: If true then async request else sender will expect response in same request , default is true.
+          description: The async header indicate that API expect response in async manner,If true then async request else sender will expect response in same request , default is true.
           type: boolean 
           example: true
           default: true

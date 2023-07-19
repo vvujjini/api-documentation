@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: CRVS interoperability APIs
+  title: CRVS interoperability APIs(Sync APIs)
   description: |-
     The CRVS interoperability APIs describes different APIs some of them are usecase specific and other are generalized APIs to perform interoperable operations between CRVS registry and SP system.
     You can now help us improve the API whether it's by making changes to the definition itself or to the code.
@@ -34,12 +34,13 @@ servers:
     url: https://apihost
 tags:
   - name: Search API
-    description: 'The Search API section comprises two endpoints, namely "/search" and "/on-search"' 
+    description: 'The Search API describes API endpoints "/search"' 
   - name: Event subscription
     description: 'The event subscription section describes API endpoints "/subscribe" "/unsubscribe" "/subscription-list" "/notify"'
   - name: Request status
     description: 'The request status check APIs performs tracing of request'    
 paths:
+
   /search:
     post:
       tags:
@@ -50,7 +51,6 @@ paths:
        <br>1) Signature 
        <br>2) headers 
        <br>3) message
-      
       parameters:
         - $ref: "./headers.yaml#/components/parameters/authorization"
       requestBody:
@@ -67,7 +67,7 @@ paths:
               $ref: './common.yaml#/components/schemas/FileUploadRequest'
         required: true
       responses:
-        '200':
+        'default':
           description: Successful operation
           content:
             application/json:
@@ -80,10 +80,6 @@ paths:
               schema:
                 type: string
                 format: binary                
-        '201':
-          $ref: './responses.yaml#/components/responses/201'
-        '202':
-          $ref: './responses.yaml#/components/responses/202'
         '400':
           $ref: './responses.yaml#/components/responses/400'
         '401':
@@ -96,59 +92,6 @@ paths:
           $ref: './responses.yaml#/components/responses/405'
         '500':
           $ref: './responses.yaml#/components/responses/500' 
-      security:
-        - x-access-token:
-            - read:search
-  /on-search:
-    post:
-      tags:
-        - Search API
-      summary: 'Search request call back: /on-search'
-      description: The requester will pass information submitted in search and if response prepared then it will send content
-      parameters:
-        - $ref: "./headers.yaml#/components/parameters/authorization"
-      requestBody:
-        description: Search response to SP system
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SearchResponse'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/SearchResponse'
-          multipart/form-data:
-            schema:
-              $ref: './common.yaml#/components/schemas/FileUploadRequest'
-        required: true
-      responses:
-        'default':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: './responses.yaml#/components/schemas/ApiResponseMessage'     
-            application/xml:
-              schema:
-                $ref: './responses.yaml#/components/schemas/ApiResponseMessage'
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary  
-        '202':
-          $ref: './responses.yaml#/components/responses/202'
-        '400':
-          $ref: './responses.yaml#/components/responses/400'
-        '401':
-          $ref: './responses.yaml#/components/responses/401'
-        '403':
-          $ref: './responses.yaml#/components/responses/403'
-        '404':
-          $ref: './responses.yaml#/components/responses/404'
-        '405':
-          $ref: './responses.yaml#/components/responses/405'
-        '500':
-          $ref: './responses.yaml#/components/responses/500' 
-
       security:
         - x-access-token:
             - read:search
@@ -357,62 +300,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './responses.yaml#/components/schemas/ApiResponseMessage'     
+                $ref: './req-status.yaml#/components/schemas/RequestStatusCheckResponse'          
             application/xml:
               schema:
-                $ref: './responses.yaml#/components/schemas/ApiResponseMessage'
+                $ref: './req-status.yaml#/components/schemas/RequestStatusCheckResponse'     
             application/octet-stream:
               schema:
                 type: string
                 format: binary                
 
-        '400':
-          $ref: './responses.yaml#/components/responses/400'
-        '401':
-          $ref: './responses.yaml#/components/responses/401'
-        '403':
-          $ref: './responses.yaml#/components/responses/403'
-        '404':
-          $ref: './responses.yaml#/components/responses/404'
-        '405':
-          $ref: './responses.yaml#/components/responses/405'
-        '500':
-          $ref: './responses.yaml#/components/responses/500'             
-      security:
-        - x-access-token:
-            - read:search
-  /on-status:
-    post:
-      tags:
-        - Request status
-      summary: ''
-      description: ''
-      operationId: ''
-      parameters:
-        - $ref: "./headers.yaml#/components/parameters/authorization"
-      requestBody:
-        description: 'Request to un-subscribe'
-        content:
-          application/json:
-            schema:
-              $ref: './req-status.yaml#/components/schemas/RequestStatusCheckResponse'     
-          application/xml:
-            schema:
-              $ref: './req-status.yaml#/components/schemas/RequestStatusCheckResponse' 
-          multipart/form-data:
-            schema:
-              $ref: './common.yaml#/components/schemas/FileUploadRequest'
-        required: true
-      responses:
-        'default':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: './responses.yaml#/components/schemas/ApiResponseMessage'     
-            application/xml:
-              schema:
-                $ref: './responses.yaml#/components/schemas/ApiResponseMessage'
         '400':
           $ref: './responses.yaml#/components/responses/400'
         '401':
@@ -442,9 +338,7 @@ components:
             - $ref: './headers.yaml#/components/schemas/CommonHeaders'
             - $ref: './headers.yaml#/components/schemas/SearchAction'
             - $ref: './headers.yaml#/components/schemas/TotalCountHeader'
-            - $ref: './headers.yaml#/components/schemas/EncHeaders'
-            - $ref: './headers.yaml#/components/schemas/AsyncHeaders'      
-            - $ref: './headers.yaml#/components/schemas/SearchCallbackHeader'   
+            - $ref: './headers.yaml#/components/schemas/EncHeaders'      
         message:
           type: object
           description: 'The search data using which search to be performed'
@@ -454,7 +348,6 @@ components:
       required: 
         - headers
         - message
-        - async
     SearchMessage:
       type: object
       properties:
@@ -509,10 +402,6 @@ components:
           $ref: "./common.yaml#/components/schemas/PaginationRequest"
         locale:
           $ref: './common.yaml#/components/schemas/Locale'
-#        filter: 
-#          type: string
-#          example: ''
-#          enum: ['person_info','is_alive','marital_status','birth_info','marriage_registration','divorce_registration','death_info','parent_info','vital_event_dates','vital_events_info']
       required: 
         - reference_id
         - timestamp
@@ -587,6 +476,7 @@ components:
           anyOf:
             - $ref: '#/components/schemas/EventNotificationMessage'
             - $ref: './common.yaml#/components/schemas/EncryptedRequest'
+        
       required:
         - headers
         - message

@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: CRVS interoperability APIs
+  title: CRVS interoperability APIs(Async APIs1)
   description: |-
     The CRVS interoperability APIs describes different APIs some of them are usecase specific and other are generalized APIs to perform interoperable operations between CRVS registry and SP system.
     You can now help us improve the API whether it's by making changes to the definition itself or to the code.
@@ -38,7 +38,7 @@ tags:
   - name: Event subscription
     description: 'The event subscription section describes API endpoints "/subscribe" "/unsubscribe" "/subscription-list" "/notify"'
   - name: Request status
-    description: 'The request status check APIs performs tracing of request'    
+    description: 'The request status check APIs enable request tracking, and the status API will deliver response data to the endpoint "/on-status." The requester must implement the "/on-status" endpoint to receive the data.'        
 paths:
   /search:
     post:
@@ -50,7 +50,9 @@ paths:
        <br>1) Signature 
        <br>2) headers 
        <br>3) message
-      
+
+       The async behaviour of APIs will send resposne to /on-search end point, so to receive data /on-search end point to be implemented at data receiver end.
+
       parameters:
         - $ref: "./headers.yaml#/components/parameters/authorization"
       requestBody:
@@ -67,23 +69,19 @@ paths:
               $ref: './common.yaml#/components/schemas/FileUploadRequest'
         required: true
       responses:
-        '200':
+        'default':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SearchResponse'          
+                $ref: './responses.yaml#/components/schemas/ApiResponseMessage'
             application/xml:
               schema:
-                $ref: '#/components/schemas/SearchResponse'
+                $ref: './responses.yaml#/components/schemas/ApiResponseMessage'
             application/octet-stream:
               schema:
                 type: string
                 format: binary                
-        '201':
-          $ref: './responses.yaml#/components/responses/201'
-        '202':
-          $ref: './responses.yaml#/components/responses/202'
         '400':
           $ref: './responses.yaml#/components/responses/400'
         '401':
@@ -102,7 +100,7 @@ paths:
   /on-search:
     post:
       tags:
-        - Search API
+        - Search API     
       summary: 'Search request call back: /on-search'
       description: The requester will pass information submitted in search and if response prepared then it will send content
       parameters:
@@ -168,10 +166,6 @@ paths:
             application/json:
               schema: 
                 $ref: "./common.yaml#/components/schemas/CREventType"
-#                type: array
-#                example: ["BIRTH_REGISTRATION", "DEATH_REGISTRATION","MARRIAGE_REGISTRATION","DIVORCE_REGISTRATION","DEMOGRAPHIC_UPDATE"]
-#                items:
-#                  type: string     
       security:
         - x-access-token:
             - read:search
@@ -443,8 +437,6 @@ components:
             - $ref: './headers.yaml#/components/schemas/SearchAction'
             - $ref: './headers.yaml#/components/schemas/TotalCountHeader'
             - $ref: './headers.yaml#/components/schemas/EncHeaders'
-            - $ref: './headers.yaml#/components/schemas/AsyncHeaders'      
-            - $ref: './headers.yaml#/components/schemas/SearchCallbackHeader'   
         message:
           type: object
           description: 'The search data using which search to be performed'
@@ -454,7 +446,6 @@ components:
       required: 
         - headers
         - message
-        - async
     SearchMessage:
       type: object
       properties:
@@ -587,6 +578,7 @@ components:
           anyOf:
             - $ref: '#/components/schemas/EventNotificationMessage'
             - $ref: './common.yaml#/components/schemas/EncryptedRequest'
+        
       required:
         - headers
         - message
