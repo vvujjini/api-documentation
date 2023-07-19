@@ -98,7 +98,7 @@ components:
               $ref: './common.yaml#/components/schemas/Version'
             data: 
               type: array
-              description: 'asdas'
+              description: ''
               items:
                 $ref: '#/components/schemas/SearchResponseObject'
  

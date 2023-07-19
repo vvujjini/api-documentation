@@ -95,36 +95,42 @@ components:
           example: ''          
           enum: ['birth','death','crvs','farmer','disability']          
     DateTimeObject:
-      description: 'All dates and timestamps are represented in ISO 8601 format including timezone.Reference: ISO 8601 Date & Time'
+      description: 'All dates and timestamps are represented in ISO 8601 format including timezone.Reference: ISO 8601 Date & Time for example 2022-12-04T17:20:07-04:00. Refer https://datatracker.ietf.org/doc/html/rfc3339#section-5.6'
       properties:
-        day:
-          type: string
-          example: ''
-          description: '01 to 31'
-        month: 
-          type: string
-          example: ''
-          description: '01 (January) to 12 (December)'
-        year: 
-          type: string
-          example: ''
-          description: 'all the digits, i.e. 2012'      
-        hour:
-          type: integer
-          example: ''
-          description: '00 to 23, 24:00:00 as the end time'
-        minute:
-          type: integer
-          example: ''
-          description: '00 to 59 ( Minute is optional )'
-        second:
-          type: integer
-          example: ''
-          description: '00 to 59 ( Second is optional )'
-        timezone:
-          type: string
-          example: ''
-          description: ''
+      type: string
+      format: date-time
+      example: ''
+#    DateTimeObject:
+#      description: 'All dates and timestamps are represented in ISO 8601 format including timezone.Reference: ISO 8601 Date & Time'
+#      properties:
+#        day:
+#          type: string
+#          example: ''
+#          description: '01 to 31'
+#        month: 
+#          type: string
+#          example: ''
+#          description: '01 (January) to 12 (December)'
+#        year: 
+#          type: string
+#          example: ''
+#          description: 'all the digits, i.e. 2012'      
+#        hour:
+#          type: integer
+#          example: ''
+#          description: '00 to 23, 24:00:00 as the end time'
+#        minute:
+#          type: integer
+#          example: ''
+#          description: '00 to 59 ( Minute is optional )'
+#        second:
+#          type: integer
+#          example: ''
+#          description: '00 to 59 ( Second is optional )'
+#        timezone:
+#          type: string
+#          example: ''
+#          description: ''
          
     GooglePlusCode:
       type: object
