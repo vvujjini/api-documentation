@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: CRVS interoperability APIs(Async APIs1)
+  title: CRVS interoperability APIs(Async APIs)
   description: |-
     The CRVS interoperability APIs describes different APIs some of them are usecase specific and other are generalized APIs to perform interoperable operations between CRVS registry and SP system.
     You can now help us improve the API whether it's by making changes to the definition itself or to the code.
