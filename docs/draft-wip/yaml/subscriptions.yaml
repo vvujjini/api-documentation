@@ -21,7 +21,7 @@ components:
           type: object
           anyOf:
             - $ref: '#/components/schemas/SubscriptionMessage'
-            - $ref: './common.yaml#/components/schemas/EncryptedRequest'          
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage'          
       required:
         - headers
         - message
@@ -109,7 +109,7 @@ components:
           type: object
           anyOf:
             - $ref: './responses.yaml#/components/schemas/ApiResponseMessage'
-            - $ref: './common.yaml#/components/schemas/EncryptedRequest'          
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage'          
       required:
         - headers
         - message
@@ -197,7 +197,7 @@ components:
           type: object
           anyOf:
             - $ref: './responses.yaml#/components/schemas/ApiResponseMessage'
-            - $ref: './common.yaml#/components/schemas/EncryptedRequest'      
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage'      
       required:
         - headers
         - message
@@ -245,7 +245,7 @@ components:
           type: object
           anyOf:
             - $ref: './responses.yaml#/components/schemas/ApiResponseMessage'
-            - $ref: './common.yaml#/components/schemas/EncryptedRequest'          
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage'          
       required:
         - headers
         - message

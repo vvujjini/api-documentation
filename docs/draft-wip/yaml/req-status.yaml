@@ -17,7 +17,7 @@ components:
           type: object
           anyOf:
             - $ref: '#/components/schemas/RequestStatusCheckMessage'
-            - $ref: './common.yaml#/components/schemas/EncryptedRequest'     
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage'     
       required:
         - headers
         - message 
@@ -90,7 +90,7 @@ components:
           type: object
           anyOf:
             - $ref: '#/components/schemas/StatusCheckMessageResponse'
-            - $ref: './common.yaml#/components/schemas/EncryptedRequest'     
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage'     
       required:
         - headers
         - message 

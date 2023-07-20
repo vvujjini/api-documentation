@@ -30,26 +30,26 @@ components:
     HumanName:
       type: object
       properties:
-        family_name:
+        sur_name:
           type: string
           example: ""
-          description: "The name shared by the people in a family surname."
+          description: "Surname(s) or last name(s) of the applicant. "
         given_name:
           type: string
           example: ""
-          description: "A person's first name"
-        middle_name:
+          description: "Given name(s) or first name(s) of the applicant."
+        second_name:
           type: string
-          description: "Multiple middle names may be included by separating them with spaces."
+          description: "Second name(s) or middle name(s) of the applicant. "
           example: ""
         suffix:
           type: string
           example: ""
-          description: "Used to specify a name suffix (e.g., Jr. or III)."
+          description: "Suffix part of the applicant's name. "
         prefix:
           type: string
           example: ""
-          description: "Definition: Used to specify a name prefix (e.g., Dr.)."
+          description: "Prefix part of the applicant's name. "
 
     Relationship:
       type: object       
@@ -95,7 +95,7 @@ components:
           example: ''          
           enum: ['birth','death','crvs','farmer','disability']          
     DateTimeObject:
-      description: 'All dates and timestamps are represented in ISO 8601 format including timezone.Reference: ISO 8601 Date & Time for example 2022-12-04T17:20:07-04:00. Refer https://datatracker.ietf.org/doc/html/rfc3339#section-5.6'
+      description: 'All dates and timestamps are represented in ISO 8601 format including timezone.Reference: ISO 8601 Date & Time for example 2022-12-04T17:20:07-04:00. Refer https://www.iso.org/standard/40874.html'
       properties:
       type: string
       format: date-time
@@ -161,26 +161,30 @@ components:
           type: string
           format: float
           example: '' 
-
     ContactDetails:
-      type: object
-      properties:
-        type:
-          type: string
-          example: ''
-          enum: ['personal','offical']
-        country_code:
-          type: string
-          example: ''
-        landline_no:
-          type: string
-          example: ''          
-        extension:
-          type: string
-          example: ''
-        mobile_no:
-          type: string
-          example: ''          
+      type: string
+      description: 'Refer https://www.itu.int/rec/T-REC-E.164-201011-I/en , as per this it is RECOMMENDED as the format, for example, +1 (425) 555-1212 or +56 (2) 687 2400. If the phone number contains an extension, it is RECOMMENDED that the extension be represented using the RFC 3966(https://datatracker.ietf.org/doc/html/rfc3966) extension syntax, for example, +1 (604) 555-1234;ext=5678.'
+      example: ''
+
+#    ContactDetails:
+#      type: object
+#      properties:
+#        type:
+#          type: string
+#          example: ''
+#          enum: ['personal','offical']
+#        country_code:
+#          type: string
+#          example: ''
+#        landline_no:
+#          type: string
+#          example: ''          
+#        extension:
+#          type: string
+#          example: ''
+#        mobile_no:
+#          type: string
+#          example: ''          
                              
     Identifier:
       type: object
@@ -310,7 +314,7 @@ components:
         value:
           type: string
           example: 'attribute value'  
-    EncryptedRequest:
+    EncryptedMessage:
       type: object
       properties:
         encrypted_header:
@@ -403,7 +407,7 @@ components:
           $ref: '#/components/schemas/Sex'
         birthdate:
           $ref: '#/components/schemas/DateTimeObject'
-        place_of_birth:
+        birthplace:
           description: End-User's place of birth. The value of this member is a JSON
             structure containing some or all of the following members
           $ref: '#/components/schemas/Address'
@@ -451,43 +455,35 @@ components:
       description: Address info as per OpenID <a href="https://openid.net/specs/openid-connect-core-1_0.html#AddressClaim">specs</a>
       properties:
         address_line1:
-          description: Full mailing address, formatted for display or use on a mailing
-            label. This field MAY contain multiple lines, separated by newlines. Newlines
-            can be represented either as a carriage return/line feed pair ("\r\n")
-            or as a single line feed character ("\n").
+          description: 'Full mailing address, formatted for display or use on a mailing label. This field MAY contain multiple lines, separated by newlines. Newlines can be represented either as a carriage return/line feed pair ("\r\n") or as a single line feed character ("\n").'
           type: string
           example: ''
-        street_address:
-          description: Full street address component, which MAY include house number,
-            street name, Post Office Box, and multi-line extended street address information.
-            This field MAY contain multiple lines, separated by newlines. Newlines
-            can be represented either as a carriage return/line feed pair ("\r\n")
-            or as a single line feed character ("\n").
+        address_line_2:
+          description: 'Full street address component, which MAY include house number, street name, Post Office Box, and multi-line extended street address information. This field MAY contain multiple lines, separated by newlines. Newlines can be represented either as a carriage return/line feed pair ("\r\n") or as a single line feed character ("\n").'
           type: string
           example: ''
         locality:
           description: City or locality component.
           type: string
           example: ''
-        region:
-          description: State, province, prefecture, or region component.
+        sub_region_code:
+          description: 'District or sub-regional code'
           type: string
-        postal_code:
-          description: Zip code or postal code component.
+        region_code:
+          description: 'State, province, prefecture, or region component.'
           type: string
           example: ''
-        country:
-          description: state, province, region
+        postal_code:
+          description: 'Zip code or postal code component.'
           type: string
           example: ''
         country_code:
-          description: OPTIONAL. country part of an address represented using an ISO
-            3-letter code [ISO3166-3], e.g., "USA" or "JPN". 2-letter ISO codes [ISO3166-1]
-            MAY be used for compatibility reasons. country_code MAY be used as alternative
-            to the existing country field.
+          description: Country part of an address represented using an ISO
+            3-letter code [ISO3166-3], e.g., "USA" or "JPN". 2-letter ISO codes [ISO3166-1] e.g. ,e.g. US, JP
           type: string
           example: ''
         geo_location:
+          description: 'Refer https://github.com/google/open-location-code/wiki/Plus-codes-API for more details'
           $ref : "#/components/schemas/GooglePlusCode"         
     AttributeNameValue:
       type: object
@@ -584,12 +580,12 @@ components:
               no for death, marriage registration no for divorce/annulment, etc.,
             type: string
             example: ''
-          death_date:
+          deathdate:
             description: YYYY format is allowed. Note that depending on the underlying
               platform's date related function, providing just year can result in varying month and day, so the implementers need to take this factor
               into account to correctly process the dates.
             $ref: '#/components/schemas/DateTimeObject'
-          place_of_death:
+          deathplace:
             description: End-User's place of birth. The value of this member is a JSON structure containing some or all of the following members
             $ref: '#/components/schemas/Address'
       - "$ref": "#/components/schemas/CRRecord"
@@ -612,6 +608,16 @@ components:
             description: Registration number
             type: string
             example: ''
+          marital_status:
+            description: 'Marital status in registry, refer https://app.gitbook.com/o/0iSqNDBWH70sLmGExne0/s/qxauqL1oEtZWtHYd2Uzz/standards/1.-crvs/4.2-data-standards/4.2.2-code-directory#cd.02-marital_status'
+            type: string
+            example: ''
+          marriagedate:
+            description: 'Marriage date'
+            $ref: '#/components/schemas/DateTimeObject'
+          divorcedate:
+            description: 'Divorce date'
+            $ref: '#/components/schemas/DateTimeObject'
           registration_date:
             description: Registration date
             $ref: '#/components/schemas/DateTimeObject'

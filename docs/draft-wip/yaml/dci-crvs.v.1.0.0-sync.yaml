@@ -13,16 +13,16 @@ info:
     `Request status checking API > ` The request status checking APIs implement to check status of request sent in any above APIs
     
     Gitbook reference link:
-    - [CRVS - V1.0 ](https://app.gitbook.com/o/0iSqNDBWH70sLmGExne0/s/qxauqL1oEtZWtHYd2Uzz/dci/readme)
+    - [CRVS - V1.0 ](https://digital-convergence-initiative-d.gitbook.io/dci-standards-1/wUwmJRFD0Hn6jI5xMat1/standards/1.-crvs)
 
     Code directory links:
-    - [Identifiers](Links to be updated)
+    - [Identifiers](https://digital-convergence-initiative-d.gitbook.io/dci-standards-1/wUwmJRFD0Hn6jI5xMat1/standards/1.-crvs/4.2-data-standards/4.2.2-code-directory#cd.01-identifier_type)
           
-    - [Marital Status](Links to be updated)
+    - [Marital Status](https://digital-convergence-initiative-d.gitbook.io/dci-standards-1/wUwmJRFD0Hn6jI5xMat1/standards/1.-crvs/4.2-data-standards/4.2.2-code-directory#cd.02-marital_status)
           
-    - [Sex](Links to be updated)
+    - [Sex](https://digital-convergence-initiative-d.gitbook.io/dci-standards-1/wUwmJRFD0Hn6jI5xMat1/standards/1.-crvs/4.2-data-standards/4.2.2-code-directory#cd.03-sex)
           
-    - [Events types](Links to be updated)   
+    - [Vital event types](https://digital-convergence-initiative-d.gitbook.io/dci-standards-1/wUwmJRFD0Hn6jI5xMat1/standards/1.-crvs/4.2-data-standards/4.2.2-code-directory#cd.04-vital_events)   
     
     Each request build up of three section 
     - Signature 
@@ -344,7 +344,7 @@ components:
           description: 'The search data using which search to be performed'
           anyOf:
             - $ref: '#/components/schemas/SearchMessage'
-            - $ref: './common.yaml#/components/schemas/EncryptedRequest'
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage'
       required: 
         - headers
         - message
@@ -421,7 +421,7 @@ components:
           type: object
           anyOf:
             - $ref: './responses.yaml#/components/schemas/ApiResponseMessage'
-            - $ref: './common.yaml#/components/schemas/EncryptedRequest' 
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage' 
     OnStatusResponse:
       type: object
       properties:
@@ -435,7 +435,7 @@ components:
           type: object
           anyOf:
             - $ref: './responses.yaml#/components/schemas/ApiResponseMessage'
-            - $ref: './common.yaml#/components/schemas/EncryptedRequest'          
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage'          
     SearchResponse:
       type: object
       properties:
@@ -453,7 +453,7 @@ components:
           description: ''
           anyOf:
             - $ref: './search.yaml#/components/schemas/SearchResponseMessage'
-            - $ref: './common.yaml#/components/schemas/EncryptedRequest' 
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage' 
       required:
         - headers
         - message
@@ -474,7 +474,7 @@ components:
           type: object 
           anyOf:
             - $ref: '#/components/schemas/EventNotificationMessage'
-            - $ref: './common.yaml#/components/schemas/EncryptedRequest'
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage'
         
       required:
         - headers
@@ -506,7 +506,7 @@ components:
           type: object
           anyOf:
             - $ref: './req-status.yaml#/components/schemas/RequestStatusCheckMessage'
-            - $ref: './common.yaml#/components/schemas/EncryptedRequest'     
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage'     
       required:
         - headers
         - message 
@@ -527,7 +527,7 @@ components:
           type: object
           anyOf:
             - $ref: './req-status.yaml#/components/schemas/StatusCheckMessageResponse'
-            - $ref: './common.yaml#/components/schemas/EncryptedRequest'     
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage'     
       required:
         - headers
         - message   
