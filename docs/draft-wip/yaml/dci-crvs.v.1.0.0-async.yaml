@@ -45,13 +45,7 @@ paths:
       tags:
         - Search API
       summary: 'Search request: /search'
-      description: |-
-       The search request build up of three section 
-       <br>1) Signature 
-       <br>2) headers 
-       <br>3) message
-
-       The async behaviour of APIs will send resposne to /on-search end point, so to receive data /on-search end point to be implemented at data receiver end.
+      description: 'The async behaviour of APIs will send resposne to /on-search end point, so to receive data /on-search end point to be implemented at data receiver end.'
 
       parameters:
         - $ref: "./headers.yaml#/components/parameters/authorization"

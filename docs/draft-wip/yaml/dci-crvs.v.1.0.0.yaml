@@ -45,12 +45,7 @@ paths:
       tags:
         - Search API
       summary: 'Search request: /search'
-      description: |-
-       The search request build up of three section 
-       <br>1) Signature 
-       <br>2) headers 
-       <br>3) message
-      
+      description: ''
       parameters:
         - $ref: "./headers.yaml#/components/parameters/authorization"
       requestBody:
@@ -134,8 +129,6 @@ paths:
               schema:
                 type: string
                 format: binary  
-        '202':
-          $ref: './responses.yaml#/components/responses/202'
         '400':
           $ref: './responses.yaml#/components/responses/400'
         '401':
