@@ -154,6 +154,9 @@ components:
         message: 
           type: string
           example: ''
+      required:
+        - code
+        - message
     HttpStatus201:
       type: object
       description: HTTP layer error details
@@ -180,6 +183,11 @@ components:
           type: string
           example: ''
           description: ''
+      required:
+        - ack_status
+        - timestamp
+        - error
+        - correlation_id
     HttpStatus202:
       type: object
       description: HTTP layer error details
@@ -206,6 +214,11 @@ components:
           type: string
           example: ''
           description: ''
+      required:
+        - ack_status
+        - timestamp
+        - error
+        - correlation_id
     HttpErrorResponse400:
       description: HTTP layer error details
       properties:
@@ -215,6 +228,9 @@ components:
         error_message:
           type: string
           example: 'Bad Request'
+      required:
+        - error_code
+        - error_message
     HttpErrorResponse401:
       description: HTTP layer error details
       properties:
@@ -224,6 +240,9 @@ components:
         error_message:
           type: string
           example: 'Unauthorized' 
+      required:
+        - error_code
+        - error_message
     HttpErrorResponse403:
       description: HTTP layer error details
       properties:
@@ -233,6 +252,9 @@ components:
         error_message:
           type: string
           example: 'Forbidden'   
+      required:
+        - error_code
+        - error_message
     HttpErrorResponse404:
       description: HTTP layer error details
       properties:
@@ -242,6 +264,9 @@ components:
         error_message:
           type: string
           example: 'Not Found'
+      required:
+        - error_code
+        - error_message
     HttpErrorResponse422:
       description: HTTP layer error details
       properties:
@@ -251,6 +276,9 @@ components:
         error_message:
           type: string
           example:    
+      required:
+        - error_code
+        - error_message
     HttpErrorResponse405:
       description: HTTP layer error details
       properties:
@@ -260,6 +288,9 @@ components:
         error_message:
           type: string
           example: 'Method Not Allowed'
+      required:
+        - error_code
+        - error_message
     HttpErrorResponse500:
       description: HTTP layer error details
       properties:
@@ -269,3 +300,6 @@ components:
         error_message:
           type: string
           example: 'Internal server error' 
+      required:
+        - error_code
+        - error_message          

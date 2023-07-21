@@ -331,6 +331,12 @@ components:
         iv:
           type: string
           description:  This is a Base64Url-encoded random bit string to be used as the Initialization Vector (IV) when encrypting the plaintext to produce the ciphertext. The size of the IV depends on the encryption algorithm used.
+      required:
+        - encrypted_header
+        - data
+        - encrypted_key
+        - auth_tag
+        - iv
     ProtectedHeader:
       type: object
       description: JWE Header-  This is a Base64Url-encoded JSON object that contains the parameters describing the cryptographic operations applied to the JWE Protected Header and the JWE Encrypted Key
@@ -450,6 +456,13 @@ components:
           example: ''
         additional_attributes:
           $ref : "#/components/schemas/AttributeNameValue"
+      required:
+        - identifier
+        - name
+        - sex
+        - birthdate
+        - birthplace
+        - nationalities
     Address:
       title: Address
       description: Address info as per OpenID <a href="https://openid.net/specs/openid-connect-core-1_0.html#AddressClaim">specs</a>
@@ -517,6 +530,9 @@ components:
             type: string
             example: ''
       - "$ref": "#/components/schemas/RegistryRecord"
+      required:
+        - identifier
+        - issue_date
     CRRecordBirth:
       description: |
         1. Civil registry birth and adoption type record
@@ -556,6 +572,10 @@ components:
                       - daughter
                       - other
       - "$ref": "#/components/schemas/CRRecord"
+      required:
+        - event_type
+        - registration_number
+        - registration_date
     CRRecordDeath:
       description: |
         1. Civil registry death record
@@ -589,6 +609,13 @@ components:
             description: End-User's place of birth. The value of this member is a JSON structure containing some or all of the following members
             $ref: '#/components/schemas/Address'
       - "$ref": "#/components/schemas/CRRecord"
+      required:
+        - event_type
+        - registration_number
+        - registration_date
+        - deathdate
+        - deathplace
+
     CRRecordUnion:
       description: |
         1. Civil registry marriage, divorce, seperation, annulment type records
@@ -635,7 +662,13 @@ components:
                   - wife
                   - husband
       - $ref: "#/components/schemas/CRRecord"      
-
+      required:
+        - event_type
+        - registration_number
+        - marital_status
+        - marriagedate
+        - registration_date
+        - related_person
     CRRelatedPerson:
       type: object
       title: CRRelatedPerson
@@ -658,7 +691,11 @@ components:
             - spouse
             - partner
             - other
-          example: ''                
+          example: ''
+      required:
+        - identifier               
+        - name
+        - relationship
     ExpressionWithCondition:
       description: Expression with a condition
       type: object
@@ -869,6 +906,9 @@ components:
             $ref: './common.yaml#/components/schemas/ContactDetails'
         sex:
           $ref: './common.yaml#/components/schemas/Sex'
+      required:
+        - identifier
+        - name
     Filter:           
       type: object
       description: Record attribute(s) to send in response thorugh callback notification

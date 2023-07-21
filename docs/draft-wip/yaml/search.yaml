@@ -101,6 +101,12 @@ components:
               description: ''
               items:
                 $ref: '#/components/schemas/SearchResponseObject'
+          required:
+            - version
+            - data
+      required:
+        - transaction_id
+        - search_response
  
     SearchResponseObject:
       type: object
@@ -137,8 +143,7 @@ components:
           $ref: './common.yaml#/components/schemas/Locale'
       required:
         - reference_id           
-        - query
-        - timestamp    
-        - beneficiary           
+        - timestamp
+        - status         
         - pagination
         - locale                  
