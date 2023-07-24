@@ -1,0 +1,301 @@
+components:
+  schemas:
+    SubscriptionRequest:
+      type: object
+      properties:
+        signature: 
+          $ref: './signature.yaml#/components/schemas/MsgSignature'
+        headers:
+          allOf:
+            - $ref: './headers.yaml#/components/schemas/CommonHeaders'
+            - $ref: './headers.yaml#/components/schemas/SubscribeAction'
+            - $ref: './headers.yaml#/components/schemas/EncHeaders'     
+            - $ref: './headers.yaml#/components/schemas/AsyncHeaders'    
+            - $ref: './headers.yaml#/components/schemas/SearchCallbackHeader'                  
+          properties:
+            action:
+              enum:
+                - subscribe
+              example: 'subscribe'      
+        message:
+          type: object
+          anyOf:
+            - $ref: '#/components/schemas/SubscriptionMessage'
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage'          
+      required:
+        - headers
+        - message
+    SubscriptionMessage: 
+      type: object
+      properties:
+        transaction_id:
+          $ref: './common.yaml#/components/schemas/TransactionId'
+        subscribe_request:
+          $ref: '#/components/schemas/SubscribeRequest'
+      required:
+        - transaction_id
+        - subscribe_request
+  
+    SubscribeRequest:
+      type: object
+      description: Subscribe to a life event with crvs
+      properties:
+        reference_id:
+          $ref: "./common.yaml#/components/schemas/ReferenceId"
+        timestamp:
+          $ref: "./common.yaml#/components/schemas/TimeStamp"
+        registry_type:
+          $ref: "./common.yaml#/components/schemas/RegistryType"
+        event_type:
+          $ref: "./common.yaml#/components/schemas/CREventType"
+        frequency:
+          type: string
+          example: ''
+          enum: ['immediate','hourly','daily','weekly']        
+        subscribe_criteria:
+          type: object
+          properties:
+            query:
+              oneOf:
+              - $ref: "./common.yaml#/components/schemas/RegistryRecord"
+              - $ref: "./common.yaml#/components/schemas/CRRecordBirth"
+              - $ref: "./common.yaml#/components/schemas/CRRecordDeath"
+              - $ref: "./common.yaml#/components/schemas/CRRecordUnion"
+            custom_query:
+              "$ref": "./common.yaml#/components/schemas/ExpressionWithConditionList"
+        filter:
+          description: Record attribute(s) to send in response thorugh callback notification
+            events
+          items:
+            type: string
+            example: ''
+        locale:
+          $ref: "./common.yaml#/components/schemas/Locale"
+      required:
+      - reference_id
+      - timestamp
+      - registry_type
+      - subscribe_criteria
+      - filter                
+    EventInfo:
+      type: object
+      properties:
+        code:
+          type: string
+          example: ''
+          enum: ["BIRTH_REGISTRATION", "DEATH_REGISTRATION","MARRIAGE_REGISTRATION","DIVORCE_REGISTRATION","DEMOGRAPHIC_UPDATE"]
+        frequency:
+          type: string
+          example: ''
+          enum: ['immediate','hourly','daily','weekly']
+        response_fields:
+          type: array
+          example: '[]'
+          items:
+            type: string 
+            enum: []
+            example: '[]'
+
+    SubscriptionResponse:
+      type: object
+      properties:
+        signature: 
+          $ref: './signature.yaml#/components/schemas/MsgSignature'
+        headers:
+          allOf:
+            - $ref: './headers.yaml#/components/schemas/CommonHeaders'
+            - $ref: './headers.yaml#/components/schemas/EncHeaders'          
+        message:
+          type: object
+          anyOf:
+            - $ref: './responses.yaml#/components/schemas/ApiResponseMessage'
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage'          
+      required:
+        - headers
+        - message
+    SubscribeReqStatusMsg: 
+      type: object 
+      properties:
+        reference_id:
+          $ref: "./common.yaml#/components/schemas/ReferenceId"
+        timestamp:
+          $ref: "./common.yaml#/components/schemas/TimeStamp"
+        status:
+          $ref: "./common.yaml#/components/schemas/RequestStatus"
+        status_reason_code:
+          $ref: "./common.yaml#/components/schemas/SubscriptionStatusReasonCode"
+        status_reason_message:
+          description: Status reason code message. Helps actionanble messaging for
+            systems/end users
+          type: string
+          maxLength: 999
+          example: ''
+        registry_type:
+          $ref: "./common.yaml#/components/schemas/RegistryType"
+        event_type:
+          $ref: "./common.yaml#/components/schemas/CREventType"
+        frequency:
+          type: string
+          example: ''
+          enum: ['immediate','hourly','daily','weekly']        
+        subscribe_criteria:
+          type: object
+          properties:
+            query:
+              oneOf:
+              - $ref: "./common.yaml#/components/schemas/RegistryRecord"
+              - $ref: "./common.yaml#/components/schemas/CRRecordBirth"
+              - $ref: "./common.yaml#/components/schemas/CRRecordDeath"
+              - $ref: "./common.yaml#/components/schemas/CRRecordUnion"
+            custom_query:
+              "$ref": "./common.yaml#/components/schemas/ExpressionWithConditionList"
+        filter:
+          $ref: "./common.yaml#/components/schemas/Filter"  
+        locale:
+          $ref: "./common.yaml#/components/schemas/Locale"
+      required:
+      - reference_id
+      - timestamp
+      - registry_type
+      - subscribe_criteria
+      - filter 
+    SubscriptionList:
+      type: object
+      properties:
+        subscription:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionObject'
+    SubscriptionObject:
+      type: object
+      properties:
+        event_code:
+          type: string
+          example: ''
+          enum: ["BIRTH_REGISTRATION", "DEATH_REGISTRATION","MARRIAGE_REGISTRATION","DIVORCE_REGISTRATION","DEMOGRAPHIC_UPDATE"]
+        registration_id:
+          type: string
+          example: ''
+        status:
+          type: string
+          example: ''
+    UnSubscribeRequest:
+      type: object
+      properties:
+        signature:
+          allOf:
+            - $ref: './signature.yaml#/components/schemas/MsgSignature'      
+        headers:
+          allOf:
+            - $ref: './headers.yaml#/components/schemas/CommonHeaders'
+            - $ref: './headers.yaml#/components/schemas/UnsubscribeAction'
+            - $ref: './headers.yaml#/components/schemas/TotalCountHeader'
+            - $ref: './headers.yaml#/components/schemas/EncHeaders'   
+            - $ref: './headers.yaml#/components/schemas/AsyncHeaders'    
+            - $ref: './headers.yaml#/components/schemas/SearchCallbackHeader'                  
+        message:
+          type: object
+          anyOf:
+            - $ref: './responses.yaml#/components/schemas/ApiResponseMessage'
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage'      
+      required:
+        - headers
+        - message
+
+    UnSubscribeMessage:
+      type: object
+      properties:
+        transaction_id:
+          $ref: "./common.yaml#/components/schemas/ReferenceId"
+        timestamp:
+          $ref: "./common.yaml#/components/schemas/TimeStamp"
+#        event_code:
+#          type: array
+#          items:
+#            type: string
+#          example: ["BIRTH_REGISTRATION", "DEATH_REGISTRATION","MARRIAGE_REGISTRATION","DIVORCE_REGISTRATION","DEMOGRAPHIC_UPDATE"]
+#          description: 'To un-subscribe this event send this code in subscription request'
+        client_id:
+          type: string
+          example: ''
+        registry_type:
+          $ref: "./common.yaml#/components/schemas/RegistryType"
+        event_type:
+          $ref: "./common.yaml#/components/schemas/CREventType"
+        reason:
+          type: string  
+          example: ''
+      required:
+        - transaction_id
+        - timestamp
+        - client_id
+        - registry_type
+        - event_type
+        - reason        
+    UnSubscribeResponse:
+      type: object
+      properties:
+        signature: 
+          $ref: './signature.yaml#/components/schemas/MsgSignature'
+        headers:
+          allOf:
+            - $ref: './headers.yaml#/components/schemas/CommonHeaders' 
+            - $ref: './headers.yaml#/components/schemas/EncHeaders'          
+        message:
+          type: object
+          anyOf:
+            - $ref: './responses.yaml#/components/schemas/ApiResponseMessage'
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage'          
+      required:
+        - headers
+        - message
+    UnSubscribeObjectList:
+      type: object
+      properties:
+        event:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionObject'            
+
+    NotifyEventRequestStatus:
+      allOf:
+       $ref: '#/components/schemas/NotifyEventRequest'
+      type: object
+      properties:
+
+    NotifyEventRequest:
+      type: object
+      description: Registry to notify a event to subscrbiers
+      properties:
+        reference_id:
+          "$ref": "./common.yaml#/components/schemas/ReferenceId"
+        timestamp:
+          "$ref": "./common.yaml#/components/schemas/TimeStamp"
+        status:
+          $ref: "./common.yaml#/components/schemas/RequestStatus"
+        status_reason_code:
+          $ref: "./common.yaml#/components/schemas/NotifyStatusReasonCode"
+        status_reason_message:
+          description: Status reason code message. Helps actionanble messaging for
+            systems/end users
+          type: string
+          maxLength: 999 
+          example: ''       
+        registry_type:
+          "$ref": "./common.yaml#/components/schemas/RegistryType"
+        event_type:
+          "$ref": "./common.yaml#/components/schemas/CREventType"
+        registry_data:
+          oneOf:
+          - "$ref": "./common.yaml#/components/schemas/Person"
+          - "$ref": "./common.yaml#/components/schemas/CRRecordBirth"
+          - "$ref": "./common.yaml#/components/schemas/CRRecordDeath"
+          - "$ref": "./common.yaml#/components/schemas/CRRecordUnion"
+          - "$ref": "./common.yaml#/components/schemas/RegistryRecord"
+        locale:
+          $ref: "./common.yaml#/components/schemas/Locale"
+      required:
+      - reference_id
+      - timestamp
+      - registry_type
+      - registry_data

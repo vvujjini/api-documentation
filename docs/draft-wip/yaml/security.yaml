@@ -1,0 +1,11 @@
+components:
+  securitySchemes:
+    spmis_auth:            
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    x-access-token:
+      type: http
+      scheme: bearer
+      bearerFormat: jwt
+      description: Authenticating using session token issued by platform/system API gateway or auth services issuing session token APIs using client id & secret      

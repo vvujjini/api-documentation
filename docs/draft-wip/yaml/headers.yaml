@@ -1,0 +1,187 @@
+components:
+  parameters:
+    authorization:
+      name: Authorization
+      in: header
+      required: true
+      description: Access token which was issued after successful login with gateway auth server.
+      schema:
+        type: string
+        example: Bearer <...>        
+  schemas:
+    CommonHeaders:
+      type: object
+      description: Message header
+      properties:
+        version:
+          $ref: './common.yaml#/components/schemas/Version'
+        message_id:
+          description: 'Unique message id to communicate between sender and receiver systems to deliver the message over any transport layer i.e https, pub/sub, sftp etc.,'
+          type: string
+          example: ''
+        message_ts:
+          description: Time of message generation in RFC3339 format
+          type: string
+          format: date-time
+          example: ''
+        sender_id:
+          description: 'The ID of sender system registered with the receiving system. Used for authorization, encryption, digital sign verification, etc., functions.'
+          type: string
+          example: ''
+        receiver_id:
+          description: 'The targeted system to which request to send'
+          type: string
+          example: ''
+    SearchAction:
+      type: object
+      properties:
+        action:
+          description: 'Action to be performed'
+          type: string
+          example: ''
+    OnSearchAction:
+      type: object
+      properties:
+        action:
+          description: 'Action to be performed'
+          type: string
+          example: ''
+    SubscribeAction:
+      type: object
+      properties:
+        action:
+          description: 'Action to be performed'
+          type: string
+          example: ''
+    OnSubscribeAction:
+      type: object
+      properties:
+        action:
+          description: 'Action to be performed'
+          type: string
+          example: ''
+    UnsubscribeAction:
+      type: object
+      properties:
+        action:
+          description: 'Action to be performed'
+          type: string
+          example: ''
+    NotifyAction:
+      type: object
+      properties:
+        action:
+          description: 'Action to be performed-'
+          type: string
+          example: ''
+    StatusAction:
+      type: object
+      properties:
+        action:
+          description: 'Action to be performed'
+          type: string
+          example: ''
+    OnStatusAction:
+      type: object
+      properties:
+        action:
+          description: 'Action to be performed'
+          type: string
+          example: ''
+    TotalCountHeader:
+      type: object
+      properties:
+        total_count:
+          description: Total count of requests present in the message
+          type: integer
+          example: ''
+    CompletedCountHeader:
+      type: object
+      properties:
+        completed_count:
+          description: Completed count of requests present in the message
+          type: integer
+          example: ''
+    EncHeaders:
+      type: object
+      properties:
+        is_encrypted:
+          description: If is_encrypted true then receiving system will expect message part of request in encrypted format also receiving system will expect  encryption_algorithm param.  
+          type: boolean
+          example: '' 
+          default: false   
+        encryption_algorithm:
+          description: Encryption algorithm used to encrypt message part of request
+          type: string
+          example: ""                
+      required:
+        - version
+        - message_id
+        - message_ts
+        - action
+        - sender_id
+        - receiver_id
+        - total_count
+        - completed_count
+        - is_encrypted 
+    AsyncHeaders:
+      type: object
+      description: The async header indicate that API expect response in async manner
+      properties:
+        async:
+          description: The async header indicate that API expect response in async manner,If true then async request else sender will expect response in same request , default is true.
+          type: boolean 
+          example: true
+          default: true
+    SearchCallbackHeader:
+      type: object
+      properties:
+        callbackendpoint:
+          description: The callback url for async call, if async param is true then we callbackendpoint is required.
+          type: string
+          format: uri
+          example: 'https://{server_url}/on-search'
+    SubscribeCallbackHeader:
+      type: object
+      properties:
+        callbackendpoint:
+          description: The callback url for async call, if async param is true then we callbackendpoint is required.
+          type: string
+          format: uri
+          example: 'https://{server_url}/on-subscribe'
+
+    NotifyCallbackHeader:
+      type: object
+      properties:
+        callbackendpoint:
+          description: The callback url for async call, if async param is true then we callbackendpoint is required.
+          type: string
+          format: uri
+          example: 'https://{server_url}/notify'
+    SubscribeMsgHeader:
+      type: object
+      description: Message header
+      properties:
+        callbackendpoint:
+          description: The callback url for async call
+          type: string
+          format: uri
+          example: 'https://{server_url}/notify'
+    OnStatusMsgHeader:
+      type: object
+      description: Message header
+      properties:
+        callbackendpoint:
+          description: The callback url for async call
+          type: string
+          format: uri
+          example: 'https://{server_url}/on-status'
+      required:
+        - version
+        - message_id
+        - message_ts
+        - action
+        - sender_id
+        - receiver_id
+        - total_count
+        - is_encrypted           

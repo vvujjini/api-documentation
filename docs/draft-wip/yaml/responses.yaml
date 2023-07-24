@@ -1,0 +1,305 @@
+components:
+  responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpStatus201' 
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/HttpStatus201'
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpStatus202' 
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/HttpStatus202'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse400' 
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse400'                 
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse401' 
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse401'                 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse403' 
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse403'                 
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse404' 
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse404'                 
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse405'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse405'                 
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse422' 
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse422'                 
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse500' 
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse500'                 
+
+  schemas:
+    BaseResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: ['success','failure']
+          example: ''
+        return_message:
+          type: string
+          example: ''
+        correlation_id:
+          type: string
+          example: ''
+          description: The request id will be returned in response as correlation_id
+        total_count:
+          description: Total no of record present in the message response
+          type: integer
+          example: ''   
+    ApiResponseMessage:
+      type: object
+      description: HTTP layer error details
+      properties:
+        ack_status:
+          type: string
+          description: |
+            1. ACK: If the request is valid (for basic checks) and async callback (i.e webhook) will be invoked by reciever back to the sender.
+            2. NACK: If the request is valid (for basic checks) and there is no futher updates from reciever back to the sender.
+            3. ERR: If the reuqest is invalid and reciver can't process the request. error object holds error code, message.
+          enum:
+            - ACK
+            - NACK
+            - ERR
+          example: ''
+        timestamp:       
+          description: Time of message generation in RFC3339 format
+          type: string
+          format: date-time
+          example: ''
+        error:
+          $ref: '#/components/schemas/Error'
+        correlation_id:
+          type: string
+          example: ''
+          description: ''
+      
+    ApiResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: ''
+        return_message:
+          type: string
+          example: ''
+        correlation_id:
+          type: string
+          example: ''
+          description: The transaction_id to track request response
+        total_count:
+          description: Total no of record present in the message
+          type: integer
+          example: 10
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: ''
+        message: 
+          type: string
+          example: ''
+      required:
+        - code
+        - message
+    HttpStatus201:
+      type: object
+      description: HTTP layer error details
+      properties:
+        ack_status:
+          type: string
+          description: |
+            1. ACK: If the request is valid (for basic checks) and async callback (i.e webhook) will be invoked by reciever back to the sender.
+            2. NACK: If the request is valid (for basic checks) and there is no futher updates from reciever back to the sender.
+            3. ERR: If the reuqest is invalid and reciver can't process the request. error object holds error code, message.
+          enum:
+            - ACK
+            - NACK
+            - ERR
+          example: ''
+        timestamp:       
+          description: Time of message generation in RFC3339 format
+          type: string
+          format: date-time
+          example: ''
+        error:
+          $ref: '#/components/schemas/Error'
+        correlation_id:
+          type: string
+          example: ''
+          description: ''
+      required:
+        - ack_status
+        - timestamp
+        - error
+        - correlation_id
+    HttpStatus202:
+      type: object
+      description: HTTP layer error details
+      properties:
+        ack_status:
+          type: string
+          description: |
+            1. ACK: If the request is valid (for basic checks) and async callback (i.e webhook) will be invoked by reciever back to the sender.
+            2. NACK: If the request is valid (for basic checks) and there is no futher updates from reciever back to the sender.
+            3. ERR: If the reuqest is invalid and reciver can't process the request. error object holds error code, message.
+          enum:
+            - ACK
+            - NACK
+            - ERR
+          example: ''
+        timestamp:       
+          description: Time of message generation in RFC3339 format
+          type: string
+          format: date-time
+          example: ''
+        error:
+          $ref: '#/components/schemas/Error'
+        correlation_id:
+          type: string
+          example: ''
+          description: ''
+      required:
+        - ack_status
+        - timestamp
+        - error
+        - correlation_id
+    HttpErrorResponse400:
+      description: HTTP layer error details
+      properties:
+        error_code:
+          type: string
+          example: 'ERR-400-01'   
+        error_message:
+          type: string
+          example: 'Bad Request'
+      required:
+        - error_code
+        - error_message
+    HttpErrorResponse401:
+      description: HTTP layer error details
+      properties:
+        error_code:
+          type: string
+          example: 'ERR-401-01'   
+        error_message:
+          type: string
+          example: 'Unauthorized' 
+      required:
+        - error_code
+        - error_message
+    HttpErrorResponse403:
+      description: HTTP layer error details
+      properties:
+        error_code:
+          type: string
+          example: 'ERR-403-01'      
+        error_message:
+          type: string
+          example: 'Forbidden'   
+      required:
+        - error_code
+        - error_message
+    HttpErrorResponse404:
+      description: HTTP layer error details
+      properties:
+        error_code:
+          type: string
+          example: 'ERR-404-01'   
+        error_message:
+          type: string
+          example: 'Not Found'
+      required:
+        - error_code
+        - error_message
+    HttpErrorResponse422:
+      description: HTTP layer error details
+      properties:
+        error_code:
+          type: string
+          example: 'ERR-422-01'   
+        error_message:
+          type: string
+          example:    
+      required:
+        - error_code
+        - error_message
+    HttpErrorResponse405:
+      description: HTTP layer error details
+      properties:
+        error_code:
+          type: string
+          example: 'ERR-405-01'       
+        error_message:
+          type: string
+          example: 'Method Not Allowed'
+      required:
+        - error_code
+        - error_message
+    HttpErrorResponse500:
+      description: HTTP layer error details
+      properties:
+        error_code:
+          type: string
+          example: 'ERR-500-01'   
+        error_message:
+          type: string
+          example: 'Internal server error' 
+      required:
+        - error_code
+        - error_message          

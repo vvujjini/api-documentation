@@ -1,0 +1,123 @@
+components:
+  schemas:
+    RequestStatusCheckRequest:
+      type: object
+      properties:
+        signature:
+          allOf:
+            - $ref: './signature.yaml#/components/schemas/MsgSignature'      
+        headers:
+          allOf:
+            - $ref: './headers.yaml#/components/schemas/CommonHeaders'
+            - $ref: './headers.yaml#/components/schemas/StatusAction'
+            - $ref: './headers.yaml#/components/schemas/TotalCountHeader'
+            - $ref: './headers.yaml#/components/schemas/EncHeaders'
+            - $ref: './headers.yaml#/components/schemas/OnStatusMsgHeader'
+        message: 
+          type: object
+          anyOf:
+            - $ref: '#/components/schemas/RequestStatusCheckMessage'
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage'     
+      required:
+        - headers
+        - message 
+   
+    RequestStatusCheckMessage:
+      type: object
+      properties:
+        transaction_id:
+          $ref : "./common.yaml#/components/schemas/TransactionId"
+        txnstatus_request:
+          type: array
+          items:
+            $ref : "#/components/schemas/TxnStatusRequest"
+      required:
+      - transaction_id
+      - txnstatus_request
+    TxnStatusRequest:
+      type: object
+      description: Request to search identity service requests
+      properties:
+        reference_id:
+          $ref: "./common.yaml#/components/schemas/ReferenceId"
+        search_type:
+          type: string
+          enum:
+          - transaction_id
+          - reference_id_list
+        search_attribute:
+          description: 'asdf'
+          anyOf:
+            - $ref: "./common.yaml#/components/schemas/TransactionId"
+            - $ref: "./common.yaml#/components/schemas/ReferenceIdList"
+        locale:
+          $ref: "./common.yaml#/components/schemas/Locale"
+      required:
+      - reference_id
+      - search_type
+      - search_attribute
+    RequestIdObject:
+      type: object
+      properties:
+        message_id:
+          type: string
+          example: ''
+    RequestStatusObject:
+      type: object
+      properties:
+        correlation_id:
+          type: string
+          example: ''
+        status:
+          type: string
+          example: ''
+          enum: ['received','processing','processed','failed','invalid_request_id']
+    RequestStatusCheckResponse:
+      type: object
+      description: '.'
+      properties:
+        signature:
+          allOf:
+            - $ref: './signature.yaml#/components/schemas/MsgSignature'      
+        headers:
+          allOf:
+            - $ref: './headers.yaml#/components/schemas/CommonHeaders'
+            - $ref: './headers.yaml#/components/schemas/OnStatusAction'
+            - $ref: './headers.yaml#/components/schemas/TotalCountHeader'
+            - $ref: './headers.yaml#/components/schemas/CompletedCountHeader'
+            - $ref: './headers.yaml#/components/schemas/EncHeaders'
+        message: 
+          type: object
+          anyOf:
+            - $ref: '#/components/schemas/StatusCheckMessageResponse'
+            - $ref: './common.yaml#/components/schemas/EncryptedMessage'     
+      required:
+        - headers
+        - message 
+    RequestStatusCheckResponseMessage:
+      type: array
+      items:
+        $ref: '#/components/schemas/RequestStatusObjectList'    
+    RequestStatusObjectList:
+      type: object
+      properties:
+        status:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestStatusObject'   
+    StatusCheckMessageResponse:
+      type: object
+      properties:
+        transaction_id:
+          $ref: './common.yaml#/components/schemas/TransactionId'
+        txnstatus_response: 
+          type: array      
+          description: 'dc'
+          items: 
+            anyOf: 
+              - $ref: './search.yaml#/components/schemas/SearchResponseObject'
+              - $ref: './subscriptions.yaml#/components/schemas/SubscribeReqStatusMsg'
+              - $ref: './subscriptions.yaml#/components/schemas/NotifyEventRequest' 
+     
+      
+   

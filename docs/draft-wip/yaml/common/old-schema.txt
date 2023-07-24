@@ -1,0 +1,179 @@
+    CRVSSearchByBRNResponse:
+      type: object
+      properties:
+        identifier:
+          type: array
+          items:
+            allOf:
+              - $ref: './common.yaml#/components/schemas/Identifier'
+              - $ref: './common.yaml#/components/schemas/Identifier'
+        name:
+          $ref: './common.yaml#/components/schemas/HumanName'
+        father_name:
+          $ref: './common.yaml#/components/schemas/HumanName'
+        mother_name:
+          $ref: './common.yaml#/components/schemas/HumanName'
+        contactno:
+          type: string
+        vital_event_dates:
+          type: array
+          items:
+            $ref: './common.yaml#/components/schemas/VitalEventDate'
+        gender:
+          $ref: './common.yaml#/components/schemas/Gender'         
+        birth_registration_number:
+          type: string
+          example: ''
+        death_registration_number:
+          type: string            
+          example: ''
+
+
+    CRVSSearchByMRNResponse:
+      type: object
+      properties:
+        groom_identifier:
+          type: array
+          items:
+            allOf:
+              - $ref: './common.yaml#/components/schemas/Identifier'
+              - $ref: './common.yaml#/components/schemas/Identifier'
+        groom_name:
+          $ref: './common.yaml#/components/schemas/HumanName'
+        groom_father_name:
+          $ref: './common.yaml#/components/schemas/HumanName'
+        groom_mother_name:
+          $ref: './common.yaml#/components/schemas/HumanName'
+        groom_nationality:
+          type: string
+          example: ''
+        groom_date_of_birth:
+          type: string
+          example: ''        
+        groom_marital_status:
+          type: string
+          example: ''
+          enum: [unmarried,divorced,widowed]
+        bride_identifier:
+          type: array
+          items:
+            allOf:
+              - $ref: './common.yaml#/components/schemas/Identifier'
+              - $ref: './common.yaml#/components/schemas/Identifier'
+        bride_name:
+          $ref: './common.yaml#/components/schemas/HumanName'
+        bride_father_name:
+          $ref: './common.yaml#/components/schemas/HumanName'
+        bride_mother_name:
+          $ref: './common.yaml#/components/schemas/HumanName'
+        bride_nationality:
+          type: string
+          example: ''
+        bride_date_of_birth:
+          $ref : './common.yaml#/components/schemas/DateObject'
+        bride_marital_status:
+          type: string
+          example: ''
+          enum: [unmarried,divorced,widowed]
+        contactno:
+          type: string
+          example: ''
+        date_of_marriage:
+          $ref : './common.yaml#/components/schemas/DateObject'
+        place_of_marriage:
+          type: string
+          example: ''
+        marriage_registration_number:
+          type: string
+          example: ''
+    SearchResponseObject:
+      type: object
+      properties:
+        identifiers:
+          type: object
+          properties:
+            identifier:
+              $ref: './common.yaml#/components/schemas/Identifier'
+        name:
+          $ref: './common.yaml#/components/schemas/HumanName'
+        contactno:
+          $ref : './common.yaml#/components/schemas/DateObject'
+        date_of_birth:
+          $ref : './common.yaml#/components/schemas/DateObject'
+        date_of_death:
+          $ref : './common.yaml#/components/schemas/DateObject'
+        gender:
+          type: string
+          example: ''
+          enum: ['1|male','2|female','3|transgender']
+    MarriageInfoObject:
+      type: object
+      properties:
+        groom_identifier:
+          type: array
+          items:
+            anyOf:
+              - $ref: './common.yaml#/components/schemas/Identifier'         
+        groom_name:
+          $ref: './common.yaml#/components/schemas/HumanName'
+        groom_nationality:
+          type: string
+          example: ''
+        groom_date_of_birth:
+          $ref: './common.yaml#/components/schemas/DateObject'
+        bride_identifier:
+          type: array
+          items:
+            allOf:
+              - $ref: './common.yaml#/components/schemas/Identifier'
+              - $ref: './common.yaml#/components/schemas/Identifier'
+        bride_name:
+          $ref: './common.yaml#/components/schemas/HumanName'
+        bride_nationality:
+          type: string
+          example: ''
+        bride_date_of_birth:
+          $ref: './common.yaml#/components/schemas/DateObject'
+        date_of_marriage:
+          $ref: './common.yaml#/components/schemas/DateObject'
+        place_of_marriage:
+          $ref: './common.yaml#/components/schemas/Address'
+        marriage_registration_number:
+          type: string
+          example: ''     
+    GetChildInfoResponse:
+      allOf:
+        - $ref: './responses.yaml#/components/schemas/ApiResponse'
+      type: object
+      properties:
+        payload:
+          type: array
+          items:
+            type: object
+            anyOf:
+              - $ref: '#/components/schemas/GetChildInfoResponseObject'
+    GetChildInfoResponseObject:
+      type: object
+      properties:
+        child:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChildInfo'
+    ChildInfo:
+      type: object
+      properties:
+        identifier:
+          $ref: './common.yaml#/components/schemas/Identifier'
+        name:
+          $ref: './common.yaml#/components/schemas/HumanName'
+        date_of_birth:
+          $ref: './common.yaml#/components/schemas/DateObject'
+        gender:
+          type: string
+          example: ''
+          enum: ['0|Never Married','1|Male','2|Female','3|Not applicable']          
+        birth_registration_no:
+          type: string
+          example: ''
+        birth_place_address:
+          $ref: './common.yaml#/components/schemas/Address'          

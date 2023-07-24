@@ -1,0 +1,596 @@
+openapi: 3.0.3
+info:
+  title: e-KYC APIs
+  description: 'The eKYC (Electronic Know Your Customer) is a process of verifying the identity of a customer or client using electronic means. The demographic information of the customer can be used to verify their identity in the eKYC process. The demographic information typically includes details such as name, date of birth, address, and other personal information.
+
+JSON (JavaScript Object Notation) is a data format that is commonly used for transmitting data over the internet. It is a lightweight format that is easy to read and write. JSON can be used to represent demographic information in the eKYC process.'
+  version: 0.0.1
+servers:
+  - description: Gateway endpoint
+    url: https://localhost:8081/
+tags:
+  - name: e-KYC using OTP
+    description: '' 
+  - name: e-KYC using Demographic 
+    description: '' 
+  - name: e-KYC using BioMetric
+    description: '' 
+paths:
+  /ekyc/sendotp:
+    post:
+      tags:
+        - e-KYC using OTP
+      summary: 'Generate OTP using national id'
+      description: Generate OTP using national id
+      parameters:
+        - $ref: "#/components/parameters/version"
+        - $ref: "#/components/parameters/x-hmac"
+        - $ref: "#/components/parameters/authorization"
+        - $ref: '#/components/parameters/x-registry-type'
+        - $ref: '#/components/parameters/x-message-id'
+        - $ref: '#/components/parameters/x-timestamp'
+        - $ref: '#/components/parameters/x-sender-id'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendOTPRequest'     
+        required: true
+      responses:
+        '102':
+          description: Processing 
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerateOTPResponse'          
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+      security:
+        - spmis_auth:
+            - read:search
+  /ekyc/validateOTP:
+    post:
+      tags:
+        - e-KYC using OTP
+      summary: Validate OTP which was generated with national id
+      description: '' 
+      parameters:
+        - $ref: "#/components/parameters/version"
+        - $ref: "#/components/parameters/x-hmac"
+        - $ref: "#/components/parameters/authorization"
+        - $ref: '#/components/parameters/x-registry-type'
+        - $ref: '#/components/parameters/x-message-id'
+        - $ref: '#/components/parameters/x-timestamp'
+        - $ref: '#/components/parameters/x-sender-id'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateOTPRequest'     
+        required: true
+      responses:
+        '102':
+          description: Processing 
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EkycResponse'          
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+      security:
+        - spmis_auth:
+            - read:search
+  /ekyc/demographic:
+    post:
+      tags:
+        - e-KYC using Demographic
+      summary: 'To perform e-KYC using demographic information'
+      description: ''
+      parameters:
+        - $ref: "#/components/parameters/version"
+        - $ref: "#/components/parameters/x-hmac"
+        - $ref: "#/components/parameters/authorization"
+        - $ref: '#/components/parameters/x-registry-type'
+        - $ref: '#/components/parameters/x-message-id'
+        - $ref: '#/components/parameters/x-timestamp'
+        - $ref: '#/components/parameters/x-sender-id'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DemographicEkycRequest'     
+        required: true
+      responses:
+        '102':
+          description: Processing 
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EkycResponse'          
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+      security:
+        - spmis_auth:
+            - read:search
+  /ekyc/biometric:
+    post:
+      tags:
+        - e-KYC using BioMetric
+      summary: e-KYC using biometric information,The interoperatibility layer will responsible to covnert registry or id system format. SP system should send image data to interoperability layer in Base64 format.Refer ISO 19794-4:2011 Specifications.https://en.wikipedia.org/wiki/CBEFF.
+      description: '' 
+      parameters:
+        - $ref: "#/components/parameters/version"
+        - $ref: "#/components/parameters/x-hmac"
+        - $ref: "#/components/parameters/authorization"
+        - $ref: '#/components/parameters/x-registry-type'
+        - $ref: '#/components/parameters/x-message-id'
+        - $ref: '#/components/parameters/x-timestamp'
+        - $ref: '#/components/parameters/x-sender-id'
+      requestBody:
+        description: Send request of e-KYC using finger print 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BiometricRequest'     
+        required: true
+      responses:
+        '102':
+          description: Processing 
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EkycResponse'          
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+      security:
+        - spmis_auth:
+            - read:ekyc.biometric.fingerprint
+ 
+components:
+  parameters:
+    authorization:
+      name: Authorization
+      in: header
+      required: true
+      description: Access token which was issued after successful login with gateway auth server.
+      schema:
+        type: string
+        example: Bearer <...>        
+    version:
+      in: header
+      name: x-api-version
+      schema:
+        type: string
+        example: "1.0.0"
+      required: false
+      description: If not provided use latest api version as default
+    x-timestamp:
+      in: header
+      name: timestamp
+      schema:
+        type: string
+        example: "2022-12-04T18:01:07+00:00"
+      required: true
+      description: Timestamp of request when it was sent , ideally it should be GMT
+    x-hmac:
+      in: header
+      name: x-hmac
+      schema:
+        type: string
+        example: "bd4a82cd319ababe57d0a822049ae8985029f82237509d3f091c82cbc7a6945c"
+      required: true
+      description: Signature created in combination of {x-message-id}+{x-timestamp:}+{x-sender-id}.This is usually encrypted string using HMAC-SHA-256 algorithm with the private key.
+    x-registry-type:
+      in: header
+      name: x-registry-type
+      schema:
+        type: string
+        enum: ['x-mosip','x-crvs']
+      required: true
+      description: This param used to decide which service to be called to retrieve data
+    x-sender-id:
+      in: header
+      name: x-sender-id
+      schema:
+        type: string
+        example: "Farmer help programme "
+      required: true
+      description: Information about requester , it may be some code of SP system
+    x-message-id:
+      in: header
+      name: x-message-id
+      schema:
+        type: string
+        format: uuid
+        example: 0c96614c-7255-4774-b109-cd53ee859000
+      required: true
+      description: UUID string to be sent in request header for tracking of request
+    x-async:
+      in: header
+      name: x-async
+      schema:
+        type: string
+        example: true
+      required: true
+      description: Async param indicate that response to be sent immediate or in call back, if _true_ send data in response if _false_ just return HTTP status 202
+    x-callbackendpoint:
+      in: header
+      name: x-callbackendpoint
+      schema:
+        type: string
+        example: "https://{server_url}/notify"
+      required: false
+      description: If async response requested then this param to be supplied for receiving data in SP system, this is usually endpoint active in SP env
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: string
+        return_message:
+          type: string
+        error_code:
+          type: string
+        transaction_id:
+          type: string
+          example: 0c96614c-7255-4774-b109-cd53ee859000
+          description: The transaction_id received in request
+    ApiResponseSuccess:
+      type: object
+      properties:
+        success:
+          type: boolean
+          enum: [true,false]
+        return_message:
+          type: string
+          example: 'Ekyc performed successfully'
+        transaction_id:
+          type: string
+          example: 0c96614c-7255-4774-b109-cd53ee859000
+          description: The transaction_id received in request
+    GenerateOTPResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          enum: [true,false] 
+        return_message:
+          type: string
+          example: 'OTP generated successfully and sent on mobile number ending with XXXX'
+        transaction_id:
+          type: string
+          example: 0c96614c-7255-4774-b109-cd53ee859000
+          description: The transaction_id received in response from server 
+    ValidateOTPRequest:
+      allOf: 
+        - $ref: '#/components/schemas/Concent'      
+      type: object
+      properties:
+        transaction_id:
+          type: string
+          example: 0c96614c-7255-4774-b109-cd53ee859000
+          description: The transaction_id received in response from server
+        otp:
+          type: number
+          example: 051283
+
+    EkycResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponseSuccess'
+        - $ref: '#/components/schemas/IdentifierType'
+        - $ref: '#/components/schemas/IdentifierValue'
+      type: object
+      properties:
+        person:
+          $ref: '#/components/schemas/HumanName'
+        dob:
+          type: string
+        phone:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        photo:
+          type: string
+          example: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ...' 
+    IdentifierType:
+      type: object
+      properties:
+        identifier_type:
+          type: string
+          enum: ['NATIONAL_ID','FARMER_REG_NO']
+    Concent:
+      type: object
+      properties:
+        concent:
+          type: boolean
+          enum: [true,false]
+    IdentifierValue:
+      type: object
+      properties:
+        identifier_value:
+          type: string
+          example: 345678912    
+    DemographicEkycRequest:
+      allOf: 
+        - $ref: '#/components/schemas/IdentifierType'
+        - $ref: '#/components/schemas/IdentifierValue'
+        - $ref: '#/components/schemas/Concent'
+      type: object
+      properties:
+        person:
+          $ref: '#/components/schemas/HumanName'
+        dob:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        photo:
+          type: string
+          example: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ...'    
+    HumanName:
+      type: object
+      properties:
+        suffix:
+          type: string
+          example: PhD
+        prefix:
+          type: string
+          example: Mr.
+        first_name:
+          type: string
+          example: john
+        middle_name:
+          type: string
+          example: doe
+        last_name:
+          type: string
+          example: doe
+    BiometricRequest:
+      type: object
+      properties:
+        national_id:
+          type: string
+          example: 345678912
+        pid_block:
+          type: string
+          example: 'PID Block data'    
+    IrisEkycRequest:
+      allOf: 
+        - $ref: '#/components/schemas/IdentifierType'
+        - $ref: '#/components/schemas/IdentifierValue'
+        - $ref: '#/components/schemas/Concent'
+      type: object
+      properties:
+        eye_info:
+          type: string
+          enum: [left,right,both]
+        image_base_64_string:
+          type: string
+          example: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ...'    
+    FaceEkycRequest:
+      allOf: 
+        - $ref: '#/components/schemas/IdentifierType'
+        - $ref: '#/components/schemas/IdentifierValue'
+      type: object
+      properties:
+        image_base_64_string:
+          type: string
+          example: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ...'    
+    SendOTPRequest:
+      allOf: 
+        - $ref: '#/components/schemas/IdentifierType'
+        - $ref: '#/components/schemas/IdentifierValue'    
+      type: object
+      properties:
+        registered_contact_no:
+          type: string
+          example: +61-7894561231
+    HttpErrorResponse:
+      description: HTTP layer error details
+      properties:
+        error_code:
+          type: string
+        error_message:
+          type: string
+    Address:
+      type: object
+      properties:
+        use:
+          type: string
+          enum: [home,office]
+        type:
+          type: string
+          enum: [postal , physical , both]
+        text:
+          type: string
+          example: ''          
+        city:
+          type: string
+          example: ''          
+        district:
+          type: string
+          example: ''          
+        state:
+          type: string
+          example: ''          
+        postal_code:
+          type: string
+          example: ''                    
+
+  securitySchemes:
+    spmis_auth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,149 @@
+components:
+  schemas:
+    SearchCriteria:
+      type: object
+      properties:
+        name:
+          type: string
+          example: ''
+        given_name:
+          type: string
+          example: ''
+        family_name:
+          type: string
+          example: ''
+        middle_name:
+          type: string
+          example: ''
+        sex:
+          type: string
+          example: ''
+        birthdate:
+          type: string
+          example: ''
+        birthplace:
+          type: string
+          example: ''
+        status:
+          type: string
+          example: ''
+        nationality:
+          type: string
+          example: ''
+        attributes:
+          type: array
+          items:
+            anyOf:
+              - $ref: './common.yaml#/components/schemas/Attribute'
+
+    ExpressionAnd:
+      type: object
+      properties:
+        expression:
+          type: string
+          enum: [and]
+        
+    NameField:
+      description: 'Search by name'        
+      allOf: 
+        - type: object
+          required:
+            - fieldname
+            - value
+          properties: 
+            fieldname:
+              type: string
+              example: ''
+              enum: ['firstname']
+            operator:
+              $ref: '#/components/schemas/FieldOperator'
+            value: 
+              type: string
+              example: ''
+              description: 'Search by firstname'
+ 
+    Repositories: 
+      type: object
+      required:
+        - fieldname
+        - value
+      properties: 
+        fieldname:
+          type: string
+          example: ''
+          enum: ['repository_type']
+        operator:
+          $ref: '#/components/schemas/FieldOperator'
+        value: 
+          type: string
+          example: ''
+          enum: ['Birth', 'Death', 'Marriage']
+          description: 'Search by repository_type type'
+    FieldOperator:
+      type: string
+      enum:
+        - eq
+        - not eq
+        - lt
+        - gt
+    SearchResponseMessage:
+      type: object
+      properties:
+        transaction_id:
+          $ref : './common.yaml#/components/schemas/TransactionId'
+        search_response:
+          type: object
+          properties:
+            version:
+              $ref: './common.yaml#/components/schemas/Version'
+            data: 
+              type: array
+              description: ''
+              items:
+                $ref: '#/components/schemas/SearchResponseObject'
+          required:
+            - version
+            - data
+      required:
+        - transaction_id
+        - search_response
+ 
+    SearchResponseObject:
+      type: object
+      properties:
+        reference_id:
+          $ref : './common.yaml#/components/schemas/ReferenceId'
+        timestamp:
+          $ref : './common.yaml#/components/schemas/TimeStamp'          
+        status:
+          $ref: "./common.yaml#/components/schemas/RequestStatus"
+        status_reason_code:
+          $ref: "./common.yaml#/components/schemas/SearchStatusReasonCode"
+        status_reason_message:
+          description: Status reason code message. Helps actionanble messaging for
+            systems/end users
+          type: string
+          maxLength: 999
+          example: ''
+        registry_type:
+          $ref: "./common.yaml#/components/schemas/RegistryType"
+        event_type:
+          $ref: "./common.yaml#/components/schemas/CREventType"        
+        registry_data:
+          items:
+            oneOf:
+              - $ref: "./common.yaml#/components/schemas/Person"
+              - $ref: "./common.yaml#/components/schemas/CRRecordBirth"
+              - $ref: "./common.yaml#/components/schemas/CRRecordDeath"
+              - $ref: "./common.yaml#/components/schemas/CRRecordUnion"
+              - $ref: "./common.yaml#/components/schemas/RegistryRecord"
+        pagination:
+          $ref: './common.yaml#/components/schemas/PaginationInfoInResponse'
+        locale:
+          $ref: './common.yaml#/components/schemas/Locale'
+      required:
+        - reference_id           
+        - timestamp
+        - status         
+        - pagination
+        - locale                  

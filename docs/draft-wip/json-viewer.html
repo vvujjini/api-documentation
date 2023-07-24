@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JSON Viewer Example</title>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.js" integrity="sha512-ff/E/8AEnLDXnTCyIa+l80evPRNH8q5XnPGY/NgBL645jzHL1ksmXonVMDt7e5D34Y4DTOv+P+9Rmo9jBSSyIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <style>
+    .table {
+      display: flex;
+    }
+
+    .cell {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .expand-collapse-btn {
+      cursor: pointer;
+    }
+
+    .expanded .json-data {
+      display: block;
+    }
+
+    .collapsed .json-data {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="table">
+    <div class="cell">
+      <div class="expand-collapse-btn">+</div>
+      <div class="json-data">
+        <pre id="json1"></pre>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="expand-collapse-btn">+</div>
+      <div class="json-data">
+        <pre id="json2"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      $.getJSON("data.json", function(json1) {
+        $('#json1').jsonView(json1);
+      });
+
+      $.getJSON("data.json", function(json2) {
+        $('#json2').jsonView(json2);
+      });
+
+      $('.expand-collapse-btn').click(function() {
+        var parent = $(this).parent();
+        if (parent.hasClass('expanded')) {
+          parent.removeClass('expanded');
+          parent.addClass('collapsed');
+          $(this).text('+');
+        } else {
+          parent.removeClass('collapsed');
+          parent.addClass('expanded');
+          $(this).text('-');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

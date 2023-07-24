@@ -1,0 +1,918 @@
+components:
+  schemas:
+    RequestObject:
+      type: object
+      properties:
+        signature:
+          allOf:
+            - $ref: './signature.yaml#/components/schemas/MsgSignature'      
+        headers:
+          allOf:
+            - $ref: './headers.yaml#/components/schemas/CommonHeaders'
+    SearchRequestObject:
+      type: object
+      properties:
+        signature:
+          allOf:
+            - $ref: './signature.yaml#/components/schemas/MsgSignature'      
+        headers:
+          allOf:
+            - $ref: './headers.yaml#/components/schemas/SearchMsgHeader'          
+    SubscribeRequestObject:
+      type: object
+      properties:
+        headers:
+          allOf:
+            - $ref: './headers.yaml#/components/schemas/SubscribeMsgHeader'                
+        signature:
+          allOf:
+            - $ref: './signature.yaml#/components/schemas/MsgSignature'
+    HumanName:
+      type: object
+      properties:
+        sur_name:
+          type: string
+          example: ""
+          description: "Surname(s) or last name(s) of the applicant. "
+        given_name:
+          type: string
+          example: ""
+          description: "Given name(s) or first name(s) of the applicant."
+        second_name:
+          type: string
+          description: "Second name(s) or middle name(s) of the applicant. "
+          example: ""
+        suffix:
+          type: string
+          example: ""
+          description: "Suffix part of the applicant's name. "
+        prefix:
+          type: string
+          example: ""
+          description: "Prefix part of the applicant's name. "
+
+    Relationship:
+      type: object       
+      properties:
+        relation_code:
+          type: string
+          example: ''
+          description: 'Refer relationship code directory for listing' 
+        name:
+          $ref: './common.yaml#/components/schemas/HumanName'
+    Sex:
+      type: object
+      description: 'Refer code directory all sex codes'
+      properties:
+        code:
+          type: string
+          example: ''
+          enum: ['1','2','3']          
+        display_text: 
+          type: string
+          example: ''
+          enum: ['unknown','male','female']          
+    MaritalStatus:
+      type: object
+      properties:
+        code:
+          type: string
+          example: ''
+          enum: ['1','2','3','4','5']
+        display_text: 
+          type: string
+          example: ''
+          enum: ['Never Married','Currently Married','Widow / Widower','Divorced','Separated']
+    Repositories:
+      type: object
+      properties:
+        code:
+          type: string
+          example: ''
+          enum: ['1','2','3','4','5']          
+        display_text: 
+          type: string
+          example: ''          
+          enum: ['birth','death','crvs','farmer','disability']          
+    DateTimeObject:
+      description: 'All dates and timestamps are represented in ISO 8601 format including timezone.Reference: ISO 8601 Date & Time for example 2022-12-04T17:20:07-04:00. Refer https://www.iso.org/standard/40874.html'
+      properties:
+      type: string
+      format: date-time
+      example: ''
+#    DateTimeObject:
+#      description: 'All dates and timestamps are represented in ISO 8601 format including timezone.Reference: ISO 8601 Date & Time'
+#      properties:
+#        day:
+#          type: string
+#          example: ''
+#          description: '01 to 31'
+#        month: 
+#          type: string
+#          example: ''
+#          description: '01 (January) to 12 (December)'
+#        year: 
+#          type: string
+#          example: ''
+#          description: 'all the digits, i.e. 2012'      
+#        hour:
+#          type: integer
+#          example: ''
+#          description: '00 to 23, 24:00:00 as the end time'
+#        minute:
+#          type: integer
+#          example: ''
+#          description: '00 to 59 ( Minute is optional )'
+#        second:
+#          type: integer
+#          example: ''
+#          description: '00 to 59 ( Second is optional )'
+#        timezone:
+#          type: string
+#          example: ''
+#          description: ''
+         
+    GooglePlusCode:
+      type: object
+      properties:
+        global_code:
+          type: string
+          example: ''
+        geometry: 
+          type: object
+          properties:
+            bounds: 
+              type: object
+              properties:
+                northeast:
+                  - $ref: '#/components/schemas/LatLong'
+                southwest:
+                  - $ref: '#/components/schemas/LatLong'
+            location:
+              $ref: '#/components/schemas/LatLong'
+    LatLong:
+      type: object
+      properties:
+        latitude:
+          type: string
+          format: float
+          example: ''
+        longitude:
+          type: string
+          format: float
+          example: '' 
+    ContactDetails:
+      type: string
+      description: 'Refer https://www.itu.int/rec/T-REC-E.164-201011-I/en , as per this it is RECOMMENDED as the format, for example, +1 (425) 555-1212 or +56 (2) 687 2400. If the phone number contains an extension, it is RECOMMENDED that the extension be represented using the RFC 3966(https://datatracker.ietf.org/doc/html/rfc3966) extension syntax, for example, +1 (604) 555-1234;ext=5678.'
+      example: ''
+
+#    ContactDetails:
+#      type: object
+#      properties:
+#        type:
+#          type: string
+#          example: ''
+#          enum: ['personal','offical']
+#        country_code:
+#          type: string
+#          example: ''
+#        landline_no:
+#          type: string
+#          example: ''          
+#        extension:
+#          type: string
+#          example: ''
+#        mobile_no:
+#          type: string
+#          example: ''          
+                             
+    Identifier:
+      type: object
+      description: ''
+      properties:
+        identifier_type:
+          type: string
+          example: ''
+        identifier_value:
+          type: string
+          example: ''
+    Identifiers:
+      type: array
+      description: 'Identifier have two attribute 1) identifier_type 2) identifier_value. Please refer code directory to get supported identifier <link>'
+      items:
+        $ref: '#/components/schemas/Identifier'          
+    TransactionId:
+      type: string
+      example: ''
+      description: 'Unique transaction_id set by txn initiating system (i.e sender) to co-relate requests across processing systems/service end points'
+    
+    ReferenceId:
+      type: string
+      example: ''   
+      description: 'Unique reference_id to co-relate each requests'   
+    ReferenceIdList:
+      type: array
+      items:
+        - $ref: '#/components/schemas/ReferenceId'
+
+    TimeStamp:
+      type: string
+      description: datetime in RFC3339 format
+      format: date-time
+      example: ''      
+    Sort:
+      type: object
+      properties:
+        fieldname:
+          type: string
+          example: ''
+          enum: [firstname,dob]
+        order:
+          type: string
+          example: ''
+          enum: ["asc","desc"]
+    SearchSort:
+      description: Sorting definition
+      type: object
+      properties:
+        attribute_name:
+          type: string
+          description: attribute name
+          example: ''
+        sort_order:
+          type: string
+          enum:
+            - asc
+            - desc    
+          example: ''
+    SearchSortList:
+      items:
+        - $ref: "#/components/schemas/SearchSort"
+    Pagination:
+      type: object
+      properties:
+        page_size:
+          type: number
+          example: ''
+        page_number:
+          type: number
+          example: ''  
+    PaginationInfoInResponse:
+      type: object
+      properties:
+        page_size:
+          type: number
+          example: ''
+        page_number:
+          type: number
+          example: ''
+        total_records:
+          type: number
+          example: ''      
+      required:
+        - page_size           
+        - page_number
+        - total_records    
+    Locale:
+      $ref: '#/components/schemas/LanguageCode'          
+    LanguageCode:
+      description: Indicates language code as per ISO 639.3 standard
+      type: string
+      pattern: "^[a-z]{3,3}$"
+      example: ''                    
+    FileUploadRequest:
+      type: object
+      properties:
+        file_name:
+          type: string
+          format: binary
+        file_type:
+          type: string
+          example: ''
+          enum: [json,csv,xml]
+        message_id:
+          type: string          
+    StatusInfo:
+      type: object
+      properties:
+        type: 
+          type: string
+          example: ''
+          enum: ['is_alive','marital_status']
+        code: 
+          type: string
+          example: ''          
+        display_text: 
+          type: string
+          example: ''          
+    Attribute:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'attribute name'
+        value:
+          type: string
+          example: 'attribute value'  
+    EncryptedMessage:
+      type: object
+      properties:
+        encrypted_header:
+          $ref: '#/components/schemas/ProtectedHeader'            
+        data:
+          type: string
+          description: This is the result of encrypting the plaintext using the CEK and the IV. It's Base64Url-encoded.
+        encrypted_key:
+          type: string
+          description: The base64-url encoded encrypted key
+        auth_tag:
+          type: string
+          description: This is a Base64Url-encoded value that provides evidence of the integrity and authenticity of the ciphertext, Initialization Vector, and Additional Authenticated Data
+        iv:
+          type: string
+          description:  This is a Base64Url-encoded random bit string to be used as the Initialization Vector (IV) when encrypting the plaintext to produce the ciphertext. The size of the IV depends on the encryption algorithm used.
+      required:
+        - encrypted_header
+        - data
+        - encrypted_key
+        - auth_tag
+        - iv
+    ProtectedHeader:
+      type: object
+      description: JWE Header-  This is a Base64Url-encoded JSON object that contains the parameters describing the cryptographic operations applied to the JWE Protected Header and the JWE Encrypted Key
+      properties:
+        alg:
+          type: string
+          description: The JWE algorithm used for encryption
+        enc:
+          type: string
+          description: The encryption algorithm used for encrypting the plaintext
+        kid:
+          type: string
+          description: The key identifier for the encryption key    
+    RegistryType:
+      type: string
+      description: "1. Registry types like civil, population, family, household, school,
+        college, farmer, land, utitlity, etc., \n2. Country specific implementations
+        should extend and allow custom types.\n"
+      enum:
+        - civil
+        - population
+        - family
+        - household
+        - school
+        - college
+        - farmer
+        - land
+        - utility
+        - other
+      example: ''     
+    CREventType:
+      description: Civil registry event types
+      type: string
+      enum:
+        - birth
+        - death
+        - marriage
+        - divorce
+        - annulment
+        - seperation
+        - adoption
+        - demographic_change
+        - unregister      
+      example: ''
+    RegistryRecord:
+      description: |
+        1. Attributes of a person to create fetch records, create verifiable credentials or use in search criteria.
+        3. Allowes Country/Registry specific implementation extensions using Attribute Name/Value pairs.
+      properties:
+        identifier:
+          $ref: '#/components/schemas/Identifiers'
+        issue_date:
+          $ref: '#/components/schemas/DateTimeObject'
+        status:
+          description: Registry status
+          type: string
+          example: ''
+        name:
+          $ref: '#/components/schemas/HumanName'
+        email:
+          description: End-User's preferred e-mail address. Its value MUST conform
+            to the RFC 5322 [RFC5322] addr-spec syntax. The RP MUST NOT rely upon
+            this value being unique, as discussed in Section 5.7.
+          type: string
+          example: ''
+        email_verified:
+          description: address was controlled by the End-User at the time the verification
+            was performed. The means by which an e-mail address is verified is context-specific,
+            and dependent upon the trust framework or contractual agreements within
+            which the parties are operating.
+          type: boolean
+          example: ''
+        sex:
+          $ref: '#/components/schemas/Sex'
+        birthdate:
+          $ref: '#/components/schemas/DateTimeObject'
+        birthplace:
+          description: End-User's place of birth. The value of this member is a JSON
+            structure containing some or all of the following members
+          $ref: '#/components/schemas/Address'
+        phone_number:
+          description: The value of this member is a JSON
+            structure containing some or all of the following members in array of ContactDetails object
+          type: array
+          items:
+            $ref: './common.yaml#/components/schemas/ContactDetails'          
+        phone_number_verified:
+          description: True if the End-User's phone number has been verified; otherwise
+            false. When this Claim Value is true, this means that the OP took affirmative
+            steps to ensure that this phone number was controlled by the End-User
+            at the time the verification was performed. The means by which a phone
+            number is verified is context-specific, and dependent upon the trust framework
+            or contractual agreements within which the parties are operating. When
+            true, the phone_number Claim MUST be in E.164 format and any extensions
+            MUST be represented in RFC 3966 format.
+          type: boolean
+          example: ''
+        
+        address:
+          type: array
+          description: End-User's preferred postal address. The value of the address member is a JSON structure containing some or all of the members defined in Section 5.1.1.
+          items:
+            - $ref : "#/components/schemas/Address"
+        nationalities:
+          description: End-User's nationalities using ICAO 3-letter codes [ICAO-Doc9303],
+            e.g., "USA" or "JPN". 2-letter ICAO codes MAY be used in some circumstances
+            for compatibility reasons.
+          type: array
+          items:
+            type: string
+            example: ''
+        updated_at:
+          description: Time the End-User's information was last updated. Its value
+            is a JSON number representing the number of seconds from 1970-01-01T0:0:0Z
+            as measured in UTC until the date/time
+          $ref: '#/components/schemas/DateTimeObject'
+          example: ''
+        additional_attributes:
+          $ref : "#/components/schemas/AttributeNameValue"
+      required:
+        - identifier
+        - name
+        - sex
+        - birthdate
+        - birthplace
+        - nationalities
+    Address:
+      title: Address
+      description: Address info as per OpenID <a href="https://openid.net/specs/openid-connect-core-1_0.html#AddressClaim">specs</a>
+      properties:
+        address_line1:
+          description: 'Full mailing address, formatted for display or use on a mailing label. This field MAY contain multiple lines, separated by newlines. Newlines can be represented either as a carriage return/line feed pair ("\r\n") or as a single line feed character ("\n").'
+          type: string
+          example: ''
+        address_line_2:
+          description: 'Full street address component, which MAY include house number, street name, Post Office Box, and multi-line extended street address information. This field MAY contain multiple lines, separated by newlines. Newlines can be represented either as a carriage return/line feed pair ("\r\n") or as a single line feed character ("\n").'
+          type: string
+          example: ''
+        locality:
+          description: City or locality component.
+          type: string
+          example: ''
+        sub_region_code:
+          description: 'District or sub-regional code'
+          type: string
+        region_code:
+          description: 'State, province, prefecture, or region component.'
+          type: string
+          example: ''
+        postal_code:
+          description: 'Zip code or postal code component.'
+          type: string
+          example: ''
+        country_code:
+          description: Country part of an address represented using an ISO
+            3-letter code [ISO3166-3], e.g., "USA" or "JPN". 2-letter ISO codes [ISO3166-1] e.g. ,e.g. US, JP
+          type: string
+          example: ''
+        geo_location:
+          description: 'Refer https://github.com/google/open-location-code/wiki/Plus-codes-API for more details'
+          $ref : "#/components/schemas/GooglePlusCode"         
+    AttributeNameValue:
+      type: object
+      description: Attribute name value object
+      properties:
+        attribute_name:
+          type: string
+          maxLength: 99
+          example: ''
+        attribute_value:
+          type: string
+          maxLength: 999
+          example: ''
+      required:
+        - attribute_name
+        - attribute_value          
+     
+    CRRecord:
+      description: |
+        1. Civil registry specific extensions based on entities derived from OpenID PersonInfo and PersonAdditionalInfo entities
+        2. Additional checks using conditioanl expressions is possible.
+        3. Allows Country/Registry specific implementation extensions using key/value pairs.
+      allOf:
+      - properties:
+          identifier:
+            $ref: '#/components/schemas/Identifiers'
+          issue_date:
+            $ref: '#/components/schemas/DateTimeObject'
+          status:
+            description: Civil registry status
+            type: string
+            example: ''
+      - "$ref": "#/components/schemas/RegistryRecord"
+      required:
+        - identifier
+        - issue_date
+    CRRecordBirth:
+      description: |
+        1. Civil registry birth and adoption type record
+        2. Allows Country/Registry specific implementation extensions using key/value pairs.
+      title: CRRecordBirth
+      allOf:
+      - properties:
+          event_type:
+            type: string
+            enum:
+              - birth
+              - adoption
+            example: ''
+          registration_number:
+            description: Registration number
+            type: string
+            example: ''
+          registration_date:
+            description: Registration date
+            $ref: '#/components/schemas/DateTimeObject'
+          link_registration_number:
+            description: Registration number to related record. e.g birth registration
+              no for death, marriage registration no for divorce/annulment, etc.,
+            type: string
+          related_persons:
+            items:
+              allOf:
+                - "$ref": "#/components/schemas/CRRelatedPerson"
+                - properties:
+                    relationship:
+                      enum:
+                      - mother
+                      - father
+                      - husband
+                      - wife
+                      - son
+                      - daughter
+                      - other
+      - "$ref": "#/components/schemas/CRRecord"
+      required:
+        - event_type
+        - registration_number
+        - registration_date
+    CRRecordDeath:
+      description: |
+        1. Civil registry death record
+        2. Allows Country/Registry specific implementation extensions using key/value pairs.
+      title: CRRecordDeath
+      allOf:
+      - properties:
+          event_type:
+            type: string
+            enum:
+              - death
+            example: ''
+          registration_number:
+            description: Registration number
+            type: string
+            example: ''
+          registration_date:
+            description: Registration date
+            $ref: '#/components/schemas/DateTimeObject'
+          link_registration_number:
+            description: Registration number to related record. e.g birth registration
+              no for death, marriage registration no for divorce/annulment, etc.,
+            type: string
+            example: ''
+          deathdate:
+            description: YYYY format is allowed. Note that depending on the underlying
+              platform's date related function, providing just year can result in varying month and day, so the implementers need to take this factor
+              into account to correctly process the dates.
+            $ref: '#/components/schemas/DateTimeObject'
+          deathplace:
+            description: End-User's place of birth. The value of this member is a JSON structure containing some or all of the following members
+            $ref: '#/components/schemas/Address'
+      - "$ref": "#/components/schemas/CRRecord"
+      required:
+        - event_type
+        - registration_number
+        - registration_date
+        - deathdate
+        - deathplace
+
+    CRRecordUnion:
+      description: |
+        1. Civil registry marriage, divorce, seperation, annulment type records
+        2. Allows Country/Registry specific implementation extensions using key/value pairs.
+      title: CRRecordUnion
+      allOf:
+      - properties:
+          event_type:
+            type: string
+            enum:
+              - marriage
+              - divorce
+              - seperation
+              - annulment
+            example: ''
+          registration_number:
+            description: Registration number
+            type: string
+            example: ''
+          marital_status:
+            description: 'Marital status in registry, refer https://app.gitbook.com/o/0iSqNDBWH70sLmGExne0/s/qxauqL1oEtZWtHYd2Uzz/standards/1.-crvs/4.2-data-standards/4.2.2-code-directory#cd.02-marital_status'
+            type: string
+            example: ''
+          marriagedate:
+            description: 'Marriage date'
+            $ref: '#/components/schemas/DateTimeObject'
+          divorcedate:
+            description: 'Divorce date'
+            $ref: '#/components/schemas/DateTimeObject'
+          registration_date:
+            description: Registration date
+            $ref: '#/components/schemas/DateTimeObject'
+          link_registration_number:
+            description: Registration number to related record. e.g birth registration
+              no for death, marriage registration no for divorce/annulment, etc.,
+            type: string
+            example: ''
+          related_person:
+            allOf:
+            - $ref: "#/components/schemas/CRRelatedPerson"
+            - properties:
+                relationship:
+                  enum:
+                  - wife
+                  - husband
+      - $ref: "#/components/schemas/CRRecord"      
+      required:
+        - event_type
+        - registration_number
+        - marital_status
+        - marriagedate
+        - registration_date
+        - related_person
+    CRRelatedPerson:
+      type: object
+      title: CRRelatedPerson
+      description: 'Related person details'
+      properties:
+        identifier:
+          $ref: "#/components/schemas/Identifiers"
+        name:
+          $ref: "#/components/schemas/HumanName"
+        relationship:
+          type: string
+          enum:
+            - mother
+            - father
+            - guardian
+            - bride
+            - groom
+            - wife
+            - husband
+            - spouse
+            - partner
+            - other
+          example: ''
+      required:
+        - identifier               
+        - name
+        - relationship
+    ExpressionWithCondition:
+      description: Expression with a condition
+      type: object
+      properties:
+        expression1:
+          "$ref": "#/components/schemas/Expression"
+        condition:
+          "$ref": "#/components/schemas/ExpCondition"
+        expression2:
+          "$ref": "#/components/schemas/Expression"
+      required:
+      - expression1
+    ExpressionWithConditionList:
+      items: 
+        $ref: "#/components/schemas/ExpressionWithCondition"          
+    Error:
+      description: |
+        Describes an error object that is returned to standard post call request. <br>
+        1. This object shall be sent when any request received by a participant is not parsable or message integrity check fails. <br>
+        2. This object may be used across all transport protocols to acknowledge the receipt of a message i.e HTTPS, FTP, Messaging etc., <br>"
+      type: object
+      properties:
+        code:
+          type: string
+          description: Standard error code
+          enum:
+            - err.request.bad
+            - err.request.unauthorized
+            - err.request.forbidden
+            - err.request.not_found
+            - err.request.timeout
+            - err.version.not_supported
+            - err.request.too_many_requests
+            - err.sender_id.invalid
+            - err.sender_uri.invalid
+            - err.receiver_id.invalid
+            - err.signature.missing
+            - err.signature.invalid
+            - err.encryption.invalid
+            - err.service.unavailable
+          example: ''  
+        message:
+          type: string
+          description: message to describe above error code
+          maxLength: 999
+          example: ''
+    ExpCondition:
+      description: Condition in an expression
+      type: string
+      enum:
+      - and
+      - or
+      - not
+      example: ''
+    ExpOperator:
+      description: Operator in an expression
+      type: string
+      enum:
+      - gt
+      - lt
+      - eq
+      - ge
+      - le
+      example: ''
+    Expression:
+      description: Expression
+      properties:
+        seq_num:
+          description: expression seq number for correlation
+          type: number
+          example: ''
+        attribute_name:
+          type: string
+          description: attribute name
+          example: ''
+        operator:
+          "$ref": "#/components/schemas/ExpOperator"
+        attribute_value:
+          oneOf:
+            - type: string
+            - type: integer
+            - type: number
+            - type: boolean
+          example: ''
+      required:
+      - seq_num
+      - attribute_name
+      - operator
+      - attribute_value
+    ExpressionList:
+      description: list of attributes with matching conditions
+      items:
+        "$ref": "#/components/schemas/Expression"
+    ExpressionResult:
+      description: Expression result
+      properties:
+        seq_num:
+          description: expression seq number for correlation
+          type: number
+          example: ''
+        result:
+          type: string
+          enum:
+          - y
+          - n
+          example: ''
+      required:
+      - seq_num
+      - result
+    ExpressionResultList:
+      items:
+        "$ref": "#/components/schemas/ExpressionResult"        
+    PaginationRequest:
+      description: Pagination definition, count starts with 1
+      type: object
+      properties:
+        page_size:
+          type: number
+          format: int32
+          example: ''
+        page_number:
+          type: number
+          format: int32
+          default: 1
+          example: ''
+      required:
+      - page_size        
+    RequestStatus:
+      type: string
+      description: 'Request (e.g disburse, link, unlink, resolve, issue, search, verify,
+        etc.,) status: <br> 1. rcvd: Received; Request received <br> 2. pdng: Pending;
+        Request initiated <br> 3. succ: Success; Request successful <br> 4. rjct:
+        Rejected; Request rejected'
+      enum:
+        - rcvd
+        - pdng
+        - succ
+        - rjct
+      example: ''
+    StatusReasonCode:
+      type: string
+      description: Status code list for search request        
+      enum:
+        - rjct.action.invalid
+        - rjct.action.not_supported
+        - rjct.encryption_algorithm.invalid
+        - rjct.encryption_algorithm.missing
+        - rjct.errors.too_many_requests
+        - rjct.filter.invalid
+        - rjct.message_id.duplicate
+        - rjct.message_ts.invalid
+        - rjct.pagination.invalid
+        - rjct.reference_id.duplicate
+        - rjct.reference_id.invalid
+        - rjct.signature_key.missing
+        - rjct.sort.invalid
+        - rjct.timestamp.invalid
+        - rjct.total_count.invalid
+        - rjct.total_count.limit_exceeded
+        - rjct.version.invalid
+      example: ''
+    SearchStatusReasonCode:
+      allOf:
+        - $ref: "#/components/schemas/StatusReasonCode"
+      type: string
+      description: Status code list for search request
+      enum:
+        - rjct.search_criteria.invalid
+        - rjct.search.too_many_records_found
+      example: ''
+    SubscriptionStatusReasonCode:
+      allOf:
+        - $ref: "#/components/schemas/StatusReasonCode"
+      type: string
+      description: Status code list for subscription request
+      enum:
+        - rjct.search_attribute.invalid
+        - rjct.search_attribute.too_many_records_found
+        - rjct.search_type.invalid
+        - rjct.search_type.too_many_records_found           
+      example: ''
+    NotifyStatusReasonCode:
+      allOf:
+        - $ref: "#/components/schemas/StatusReasonCode"
+      type: string
+      description: Status code list for notifications
+      enum:
+        - rjct.notify_endpint.invalid
+      example: ''
+    Version:  
+      description: "The version format should use semantic versioning, which means dividing each version identifier into three parts: MAJOR, MINOR, and PATCH. These parts are then combined using the format 'MAJOR.MINOR.PATCH' "
+      type: string
+      example: ''
+    Person:
+      type: object
+      properties:
+        identifier:
+          $ref: './common.yaml#/components/schemas/Identifiers'              
+        name:
+          $ref: './common.yaml#/components/schemas/HumanName'
+        related_persons:
+          type: array
+          items:
+            - $ref: './common.yaml#/components/schemas/Relationship'
+        phone_number:
+          type: array
+          items:
+            $ref: './common.yaml#/components/schemas/ContactDetails'
+        sex:
+          $ref: './common.yaml#/components/schemas/Sex'
+      required:
+        - identifier
+        - name
+    Filter:           
+      type: object
+      description: Record attribute(s) to send in response thorugh callback notification
+        events
+      items:
+        type: string
+      example: ''      

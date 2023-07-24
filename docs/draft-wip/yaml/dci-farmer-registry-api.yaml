@@ -1,0 +1,1605 @@
+openapi: 3.0.0
+info:
+  title: Farmer Registry Search APIs
+  description: ''
+  version: 0.0.1
+servers:
+  - description: Farmer registry interoperability layer endpoint
+    url: https://localhost:8081/
+
+tags:
+  - name: Search API
+    description: '' 
+  - name: Query Farmer Registry API
+    description: ''
+  - name: Event subscription
+    description: 'The event subscription APIs facilate to get notification when any event happens in farmer registry'
+  - name: Event notification(To be implemented by subscriber)
+    description: 'The event notification api will receive events from registry, this end points to be implemented by event subscriber'
+paths:
+  /search:
+    post:
+      tags:
+        - Search API
+      summary: To perform search operation in registry
+      description: The Search operation perfromed for registry 
+      parameters:
+        - $ref: "#/components/parameters/version"
+        - $ref: "#/components/parameters/x-hmac"
+        - $ref: "#/components/parameters/authorization"
+        - $ref: '#/components/parameters/x-registry-type'
+        - $ref: '#/components/parameters/x-message-id'
+        - $ref: '#/components/parameters/x-timestamp'
+        - $ref: '#/components/parameters/x-sender-id'
+        - $ref: '#/components/parameters/x-async'
+        - $ref: '#/components/parameters/x-callbackendpoint'
+      requestBody:
+        description: Search request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'     
+        required: true
+      responses:
+        '102':
+          description: Processing 
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'          
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+      security:
+        - spmis_auth:
+            - read:search
+  /on-search:
+    post:
+      tags:
+        - Search API 
+      summary: Search request call back,The SP system need to implement this end point
+      description: 'The registry system will send data of search response to this end point'
+      parameters:
+        - $ref: "#/components/parameters/version"
+        - $ref: "#/components/parameters/authorization"
+        - $ref: '#/components/parameters/x-registry-type'
+        - $ref: '#/components/parameters/x-message-id'
+        - $ref: '#/components/parameters/x-timestamp'
+        - $ref: '#/components/parameters/x-sender-id'
+      requestBody:
+        description: Search request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchResponse'     
+        required: true
+      responses:
+        '102':
+          description: Processing 
+        '200':
+          description: Processing Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'          
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+      security:
+        - spmis_auth:
+            - read:search
+  /farmer/getFarmerList:
+    post:
+      tags:
+        - Query Farmer Registry API
+      summary: 'API to retrieve list of farmers based on farmerType(optional) /location(optional) / cropType(optional) / landSize(optional) '
+      description: ''
+      parameters:
+        - $ref: "#/components/parameters/version"
+        - $ref: "#/components/parameters/x-hmac"
+        - $ref: "#/components/parameters/authorization"
+        - $ref: '#/components/parameters/x-registry-type'
+        - $ref: '#/components/parameters/x-message-id'
+        - $ref: '#/components/parameters/x-timestamp'
+        - $ref: '#/components/parameters/x-sender-id'
+        - $ref: '#/components/parameters/x-async'
+        - $ref: '#/components/parameters/x-callbackendpoint'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetFarmerListRequest'     
+        required: true
+      responses:
+        '102':
+          description: Processing 
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FarmerListResponse'          
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+      security:
+        - spmis_auth:
+            - read:search
+  /farmer/isFarmer:
+    post:
+      tags:
+        - Query Farmer Registry API
+      summary: 'API to check if a person farmer or not based on ID'
+      description: '' 
+      parameters:
+        - $ref: "#/components/parameters/version"
+        - $ref: "#/components/parameters/x-hmac"
+        - $ref: "#/components/parameters/authorization"
+        - $ref: '#/components/parameters/x-registry-type'
+        - $ref: '#/components/parameters/x-message-id'
+        - $ref: '#/components/parameters/x-timestamp'
+        - $ref: '#/components/parameters/x-sender-id'
+        - $ref: '#/components/parameters/x-async'
+        - $ref: '#/components/parameters/x-callbackendpoint'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IDRequest'     
+        required: true
+      responses:
+        '102':
+          description: Processing 
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IsFarmerResponse'          
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+      security:
+        - spmis_auth:
+            - read:search
+  /farmer/getFarmerInfo:
+    post:
+      tags:
+        - Query Farmer Registry API
+      summary: 'Api to retrieve farmer information based on ID'
+      description: '' 
+      parameters:
+        - $ref: "#/components/parameters/version"
+        - $ref: "#/components/parameters/x-hmac"
+        - $ref: "#/components/parameters/authorization"
+        - $ref: '#/components/parameters/x-registry-type'
+        - $ref: '#/components/parameters/x-message-id'
+        - $ref: '#/components/parameters/x-timestamp'
+        - $ref: '#/components/parameters/x-sender-id'
+        - $ref: '#/components/parameters/x-async'
+        - $ref: '#/components/parameters/x-callbackendpoint'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IDRequest'     
+        required: true
+      responses:
+        '102':
+          description: Processing 
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FarmerInfoResponse'          
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+      security:
+        - spmis_auth:
+            - read:search
+  /farmer/getLandInfo:
+    post:
+      tags:
+        - Query Farmer Registry API
+      summary: 'Api to retrieve land information of farmer based on ID'
+      description: '' 
+      parameters:
+        - $ref: "#/components/parameters/version"
+        - $ref: "#/components/parameters/x-hmac"
+        - $ref: "#/components/parameters/authorization"
+        - $ref: '#/components/parameters/x-registry-type'
+        - $ref: '#/components/parameters/x-message-id'
+        - $ref: '#/components/parameters/x-timestamp'
+        - $ref: '#/components/parameters/x-sender-id'
+        - $ref: '#/components/parameters/x-async'
+        - $ref: '#/components/parameters/x-callbackendpoint'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IDRequest'     
+        required: true
+      responses:
+        '102':
+          description: Processing 
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FarmerLandInfoResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+      security:
+        - spmis_auth:
+            - read:search
+  /farmer/getCropInfo:
+    post:
+      tags:
+        - Query Farmer Registry API
+      summary: 'Api to retrieve crop information with land of a farmer based on ID'
+      description: '' 
+      parameters:
+        - $ref: "#/components/parameters/version"
+        - $ref: "#/components/parameters/x-hmac"
+        - $ref: "#/components/parameters/authorization"
+        - $ref: '#/components/parameters/x-registry-type'
+        - $ref: '#/components/parameters/x-message-id'
+        - $ref: '#/components/parameters/x-timestamp'
+        - $ref: '#/components/parameters/x-sender-id'
+        - $ref: '#/components/parameters/x-async'
+        - $ref: '#/components/parameters/x-callbackendpoint'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IDRequest'     
+        required: true
+      responses:
+        '102':
+          description: Processing 
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FarmerCropInfoResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+      security:
+        - spmis_auth:
+            - read:search
+
+  /subscription-list:
+    get:
+      tags:
+        - Event subscription 
+      summary: Get list of supported events in registry
+      parameters:
+        - $ref: "#/components/parameters/version"
+        - $ref: "#/components/parameters/x-hmac"
+        - $ref: "#/components/parameters/authorization"
+        - $ref: '#/components/parameters/x-registry-type'
+        - $ref: '#/components/parameters/x-message-id'
+        - $ref: '#/components/parameters/x-timestamp'
+        - $ref: '#/components/parameters/x-sender-id'
+      description: ''
+      operationId: ''
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema: 
+                type: array
+                example: ["FARMER_REGISTRATION","UNREGISTER","LAND_OWNERSHIP_CHANGED","DEMOGRAPHIC_UPDATE"]
+                items:
+                  type: string         
+      security:
+        - spmis_auth:
+            - read:events
+  /subscribe:
+    post:
+      tags:
+        - Event subscription  
+      summary: To subscribe for specific events
+      description: Response will contain details of subscription
+      operationId: ''
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionRequest'     
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionResponse'     
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse'                 
+      security:
+        - spmis_auth:
+            - read:relationships
+  /unsubscribe:
+    post:
+      tags:
+        - Event subscription  
+      summary: To un-subscribe for events
+      description: ''
+      operationId: ''
+      requestBody:
+        description: 'Request to un-subscribe'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnSubscribeRequest'     
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnSubscribeResponse'     
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse'                 
+      security:
+        - spmis_auth:
+            - read:relationships
+  /notify:
+    post:
+      tags:
+        - Event notification(To be implemented by subscriber)
+      summary: The notify end point to be implemented at subscriber system. The registry will send event data on this end point.
+      description: ''
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventNotificationRequest'     
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResponse'     
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse' 
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpErrorResponse'                 
+      security:
+        - spmis_auth:
+            - read:relationships
+
+components:
+  parameters:
+    authorization:
+      name: Authorization
+      in: header
+      required: true
+      description: Access token which was issued after successful login with gateway auth server.
+      schema:
+        type: string
+        example: Bearer <...>        
+    version:
+      in: header
+      name: x-api-version
+      schema:
+        type: string
+        example: "1.0.0"
+      required: false
+      description: If not provided use latest api version as default
+    x-timestamp:
+      in: header
+      name: timestamp
+      schema:
+        type: string
+        example: "2022-12-04T18:01:07+00:00"
+      required: true
+      description: Timestamp of request when it was sent , ideally it should be GMT
+    x-hmac:
+      in: header
+      name: x-hmac
+      schema:
+        type: string
+        example: "bd4a82cd319ababe57d0a822049ae8985029f82237509d3f091c82cbc7a6945c"
+      required: true
+      description: Signature created in combination of {payload}+{x-timestamp:}+{x-sender-id}.This is usually encrypted string using HMAC-SHA-256 algorithm with the private key.
+    x-registry-type:
+      in: header
+      name: x-registry-type
+      schema:
+        type: string
+        enum: ['x-farmer']
+      required: true
+      description: This param used to decide which service to be called to retrieve data
+    x-sender-id:
+      in: header
+      name: x-sender-id
+      schema:
+        type: string
+        example: "SP_CRVS_2022"
+      required: true
+      description: Information about requester , it may be some code of SP system
+    x-message-id:
+      in: header
+      name: x-message-id
+      schema:
+        type: string
+        format: uuid
+        example: 0c96614c-7255-4774-b109-cd53ee859000
+      required: true
+      description: UUID string to be sent in request header for tracking of request
+    x-async:
+      in: header
+      name: x-async
+      schema:
+        type: string
+        example: true
+      required: true
+      description: Async param indicate that response to be sent immediate or in call back, if _true_ send data in response if _false_ just return HTTP status 202
+    x-callbackendpoint:
+      in: header
+      name: x-callbackendpoint
+      schema:
+        type: string
+        example: "https://senderhost/callback/on-search"
+      required: false
+      description: If async response requested then this param to be supplied for receiving data in SP system, this is usually endpoint active in SP env
+
+  schemas:
+  
+    SearchRequest:
+      type: array
+      items:
+        type: object
+        anyOf:
+          - $ref: '#/components/schemas/SearchRequestObject'
+    SearchRequestObject:
+      type: object
+      properties:
+        transaction_id:
+          type: string
+          example: 0c96614c-7255-4774-b109-cd53ee851769
+        identifiers:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/Identifier'
+        demographic:
+          $ref : '#/components/schemas/SearchCriteria'
+        custom_query:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/NameField'
+              - $ref: '#/components/schemas/ExpressionAnd'
+              - $ref: '#/components/schemas/OwnerType'
+        sortby:
+          $ref: '#/components/schemas/Sort'
+        pagination:
+          type: object
+          properties:
+            page_size:
+              type: number
+              example: 10
+            page_number:
+              type: number
+              example: 5   
+    OwnerType:
+      allOf: 
+        - type: object
+          required:
+            - fieldname
+            - value
+          properties: 
+            fieldname:
+              type: string
+              example: 'ownership_type'
+              enum: ['repository_type']
+            operator:
+              $ref: '#/components/schemas/FieldOperatorAnd'
+            value: 
+              type: string
+              example: "leased"
+              enum: ['leased','contracted','self-owned','govt-granted']
+              description: 'Search by repository_type type'
+ 
+    FieldOperatorAnd:
+      type: string
+      enum:
+        - and
+    SearchCriteria:
+      type: object
+      properties:
+        name:
+          type: string
+          example: ''
+        given_name:
+          type: string
+          example: ''
+        family_name:
+          type: string
+          example: ''
+        middle_name:
+          type: string
+          example: ''
+        gender:
+          type: string
+          example: ''
+        ownership:
+          type: string
+          example: ''
+          enum: ['leased','contracted','self-owned','govt-granted']
+        status:
+          type: string
+          example: ''
+        nationality:
+          type: string
+          example: ''
+        attributes:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/Attribute'
+
+    GetFarmerListRequest:
+      type: object
+      properties:
+        farmerType:
+          type: string
+          example: 'marginal'
+        location:
+          type: string
+          example: 'South-East'
+        cropType:
+          type: string
+          example: 'seasonal'
+        landSize:
+          type: string
+          example: '5'
+        
+        
+    Attribute:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'attribute name'
+        value:
+          type: string
+          example: 'attribute value'
+    ExpressionAnd:
+      type: object
+      properties:
+        expression:
+          type: string
+          enum: [and]
+    NameField:
+      description: 'Search by name'        
+      allOf: 
+        - type: object
+          required:
+            - fieldname
+            - value
+          properties: 
+            fieldname:
+              type: string
+              example: 'firstname'
+              enum: ['firstname']
+            operator:
+              $ref: '#/components/schemas/FieldOperatorAnd'
+            value: 
+              type: string
+              example: "john"
+              description: 'Search by firstname'     
+    SearchResponse:
+      type: object
+      properties:
+        success:
+          type: string
+        return_message:
+          type: string
+        error_code:
+          type: string
+        transaction_id:
+          type: string
+          example: 0c96614c-7255-4774-b109-cd53ee859000
+          description: The transaction_id received in request
+        data: 
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/SearchResponseObjectArray'
+    SearchResponseObjectArray:
+      type: object
+      properties:
+        transaction_id:
+          type: string
+          example: 0c96614c-7255-4774-b109-cd53ee859000
+          description: The transaction_id received in request
+        data: 
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/SearchResponseObject'
+    SearchResponseObject:
+      type: object
+      properties:
+        identifier:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/Identifier'
+              - $ref: '#/components/schemas/Identifier'
+        name:
+          $ref: '#/components/schemas/HumanName'
+        contactno:
+          type: string
+        date_of_birth:
+          type: string
+          example: '11/17/1980'
+        gender:
+          type: string
+          example: 'male'     
+
+    Sort:
+      type: object
+      properties:
+        fieldname:
+          type: string
+          enum: [firstname,dob]
+        order:
+          type: string
+          enum: ["asc","desc"]
+
+    BaseResponse:
+      type: object
+      properties:
+        success:
+          type: string
+        return_message:
+          type: string
+        error_code:
+          type: string
+        transaction_id:
+          type: string
+          example: 0c96614c-7255-4774-b109-cd53ee859000
+          description: The transaction_id received in request
+    HumanName:
+      type: object
+      properties:
+        suffix:
+          type: string
+          example: ''
+        prefix:
+          type: string
+          example: Mr.
+        first_name:
+          type: string
+          example: john
+        middle_name:
+          type: string
+          example: doe
+        last_name:
+          type: string
+          example: doe
+
+    BenefeciaryId:
+      type: string
+      description: '<br> 1. Beneficiary id is a normative case insensitive represenation represented as id@id-provider </br>'
+      format: '^[a-zA-Z0-9.-]+@[a-zA-Z0-9.-]+$'
+      example: '12345@token.mosip'
+    ReferenceId:
+      type: string
+      description: Unique reference_id set by txn initiating system for each request in a batch
+      example: '12345678901234567890'      
+
+    FarmerInfoResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+      type: object
+      properties:
+        data: 
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/FarmerInfoObject'
+    FarmerBaseInfoObject:
+      type: object
+      properties:
+        identifier:
+          $ref: '#/components/schemas/Identifier'
+        name:
+          $ref: '#/components/schemas/HumanName'
+        benefeciaryId:
+          $ref: '#/components/schemas/BenefeciaryId'
+        registrationNumber:
+          $ref: '#/components/schemas/ReferenceId'
+        contactno:
+          type: string
+        date_of_birth:
+          type: string
+          example: '11/17/1980'
+        gender:
+          type: string
+          example: 'male'       
+          enum: ['not known','male','female','not applicable']   
+        location:
+          type: string
+        farmer_type:
+          type: string
+          example: 'Marginal'
+          enum: ['Marginal','Small','Medium','Large','Sharecropper','Tenant','Owner','landless']
+        national_id:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+
+    FarmerInfoObject:
+      type: object
+      properties:
+        identifier:
+          $ref: '#/components/schemas/Identifier'
+        name:
+          $ref: '#/components/schemas/HumanName'
+        benefeciaryId:
+          $ref: '#/components/schemas/BenefeciaryId'
+        registrationNumber:
+          $ref: '#/components/schemas/ReferenceId'
+        father_name:
+          $ref: '#/components/schemas/HumanName'
+        guardian_name:
+          $ref: '#/components/schemas/HumanName'
+        relation_with_guardian:
+          example: brother
+          enum: ['brother', 'uncle','sister','adopted', 'father']  
+        contactno:
+          type: string
+        date_of_birth:
+          type: string
+          example: '11/17/1980'
+        gender:
+          type: string
+          example: 'male'       
+          enum: ['not known','male','female','not applicable']   
+        location:
+          type: string
+        crop_type:
+          type: string
+          example: 'Food Crops'
+          enum: ['Food Crops','Feed Crops','Fiber Crops','Oil Crops','Ornamental Crops','Industrial Crops']
+        farmer_type:
+          type: string
+          example: 'Marginal'
+          enum: ['Marginal','Small','Medium','Large','Sharecropper','Tenant','Owner','landless']
+        landsize:
+          type: string
+        educational-qualification:
+          type: string
+          example: 'primary-level' 
+          enum: ['primary-level','secondary-level','uneducated','graduate','postgraduate'] 
+        annual-income-from-family:
+          type: string
+        farming-main-source-income:
+          type: string
+          example: 'Y'
+          enum: ['Y','N']
+        national_id:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        crop-detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/CropDetails' 
+        dependent-details:
+          type: array
+          items:
+            $ref: '#/components/schemas/DependentDetails'  
+        land-details:
+          type: array
+          items:
+            $ref: '#/components/schemas/LandDetails'   
+        schemes-availed:
+          type: array
+          items:
+            $ref: '#/components/schemas/SchemesAvailedDetails'      
+  
+    FarmerLandInfoResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+      type: object
+      properties:
+        data: 
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/FarmerLandInfoObject'    
+    
+    FarmerLandInfoObject:
+      type: object
+      properties:
+        identifier:
+          $ref: '#/components/schemas/Identifier'
+        land_info: 
+          type: array
+          items:
+            $ref: '#/components/schemas/LandDetails'     
+    
+    FarmerCropInfoResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+      type: object
+      properties:
+        data: 
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/FarmerCropInfoObject'    
+    
+    FarmerCropInfoObject:
+      type: object
+      properties:
+        identifier:
+          $ref: '#/components/schemas/Identifier'
+        crop_details_by_land: 
+          type: array
+          items:
+            $ref: '#/components/schemas/FarmerCropInfoWithLandObject'     
+
+    FarmerCropInfoWithLandObject:
+      type: object
+      properties:
+        land_info: 
+          $ref: '#/components/schemas/LandDetails'     
+        crom_info:
+          $ref: '#/components/schemas/CropDetails'
+    SchemesAvailedDetails:
+      type: object
+      description: "Schemes availed details of Farmer as stored in Farmer Registry" 
+      properties:
+         scheme-name:
+             type: string
+         availed:  
+             type: boolean
+             example: true
+             enum: [true,false]
+         scheme_benefit_amount:
+             type: string
+         
+    LandDetails:
+      type: object
+      description: "Land details of Farmer as stored in Farmer Registry" 
+      properties:
+         landownerName:
+             $ref: '#/components/schemas/HumanName'  
+         type_of_ownership:
+             type: string
+             example: 'leased'
+             enum: ['leased','contracted','self-owned','govt-granted']
+         land_location:  
+             $ref: '#/components/schemas/Address'
+         plot_number:
+             type: string
+         area_of_plot(sq m):
+             type: string
+         type_of_land:
+            type: string
+         altitude: 
+            type: string
+         latitude:
+            type: string
+         longitude:
+            type: string
+  
+    
+    DependentDetails:
+      type: object
+      description: "Crop details stored in Farmer Registry" 
+      properties:
+         dependentName:
+             $ref: '#/components/schemas/HumanName'  
+         age:
+             type: string
+         dependent_relationsip:
+             type: string
+             example: son
+             enum: ['son','daughter','father','mother','sister','grandparents','others']
+
+         dependent-member-id:
+              type: string
+               
+         dependent-national-id:
+              type: string
+             
+
+    CropDetails:
+      type: object
+      description: "Crop details stored in Farmer Registry" 
+      properties:
+         cropname:
+              type: string
+              example: "rabi-crop"
+              enum: ['rabi-crop','kharif-crop','fruits-crop','plantation-crop']
+              description: 'Search by crop detail'  
+         croptype:
+              type: string
+              example: "natural-farming"
+              enum: ['organic','inorganic','natural-farming']
+              description: ' crop type'     
+         sowing-time_in_months_and_weeks:
+              type: string
+         cropped_area:
+              type: string     
+    Identifier:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: ['NATIONAL_ID','FARMER_REG_NO']
+        value:
+          type: string
+          example: 345678912
+    HttpErrorResponse:
+      description: HTTP layer error details
+      properties:
+        error_code:
+          type: string
+        error_message:
+          type: string
+
+    SubscriptionResponse:
+      type: object
+      properties:
+        success:
+          type: string
+        return_message:
+          type: string
+        error_code:
+          type: string
+        subscribed_events:
+          type: string
+          example: 0c96614c-7255-4774-b109-cd53ee859000
+          description: The transaction_id received in request
+        data: 
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionRequest'
+    UnSubscribeRequest:
+      type: object
+      properties:
+        event_code:
+          type: string
+          enum: ["FARMER_REGISTRATION","UNREGISTER","LAND_OWNERSHIP_CHANGED","DEMOGRAPHIC_UPDATE"]
+          description: ''
+        client_id:
+          type: string
+          example: 0c96614c-7255-4774-b109-cd53ee859000          
+        reason:
+          type: string
+          example: 'other'          
+ 
+
+    Address:
+      type: object
+      properties:
+        city:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+
+    IDRequest:
+      type: object
+      properties:
+        identifier_list:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/Identifier'
+    IsFarmerResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+      type: object
+      properties:
+        data: 
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/IsFarmerCheckObject'           
+    IsFarmerCheckObject:
+      type: object
+      properties:
+        identifier:
+          $ref: '#/components/schemas/Identifier'
+        is_farmer:
+          type: string
+          enum: [yes,no]
+    FarmerListResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+      type: object
+      properties:
+        data: 
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/FarmerBasicInfoObject'           
+    FarmerBasicInfoObject:
+      type: object
+      properties:
+        uin:
+          type: string
+          description: Uin of farmer
+          example: '345678912' 
+        farmerId:
+          type: string
+          description: The farmer id in farmer registry
+          example: 'MH24ACV1455' 
+        fullName:
+          type: string
+          description: Full name of farmer
+          example: 'John Doe' 
+        location:
+          type: string
+          description: Location details
+          example: 'Farmville'      
+        cropType:
+          type: string
+          description: Crop type
+          example: 'Wheat'      
+        farmerType:
+          type: string
+          description: The farmer info for its type
+          example: 'Organic'      
+        landSize:
+          type: string
+          description: Unique reference_id set by txn initiating system for each request in a batch
+          example: '12345678901234567890'      
+    SubscriptionRequest:
+      type: object
+      properties:
+        event_info:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/EventInfo'
+        client_id:
+          type: string
+        callback_url:
+          type: string
+    EventInfo:
+      type: object
+      properties:
+        code:
+          type: string
+          example: FARMER_REGISTRATION
+        frequency:
+          type: string
+          enum: ['immediate','hourly','daily','weekly']
+        response_fields:
+          type: array
+          example: ["uid","name", "location","farmerId"]
+          items:
+            type: string 
+ 
+    UnSubscribeResponse:
+      type: object
+      properties:
+        success:
+          type: string
+        return_message:
+          type: string
+        error_code:
+          type: string
+        data: 
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionResponseObject'    
+    SubscriptionResponseObject:
+      type: object
+      properties:
+        event_code:
+          type: string
+          example: 'FARMER_REGISTRATION'
+        registration_id:
+          type: string
+          example: '0c96614c-7255-4774-b109-cd53ee859000'
+        status:
+          type: string
+          example: 'success'
+    EventNotificationRequest:
+      type: object
+      properties:
+        success:
+          type: string
+        return_message:
+          type: string
+        error_code:
+          type: string
+        transaction_id:
+          type: string
+          example: 0c96614c-7255-4774-b109-cd53ee859000
+          description: The transaction_id received in request
+        data: 
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/FarmerRegistrationEventInfo'
+              - $ref: '#/components/schemas/OwnerChangeEventInfo'
+              - $ref: '#/components/schemas/FarmerUpdateEventInfo'          
+    
+    FarmerRegistrationEventInfo:
+      type: object
+      properties:
+        event_code:
+          type: string
+          example: 'FARMER_REGISTRATION'
+        transaction_id:
+          type: string
+          example: 0c96614c-7255-4774-b109-cd53ee859000
+          description: The transaction_id received in request
+        event_data:
+          $ref : '#/components/schemas/FarmerBaseInfoObject'
+
+    OwnerChangeEventInfo:
+      type: object
+      properties:
+        event_code:
+          type: string
+          example: 'LAND_OWNERSHIP_CHANGED'
+        transaction_id:
+          type: string
+          example: 0c96614c-7255-4774-b109-cd53ee859000
+          description: The transaction_id received in request
+        event_data:
+          $ref : '#/components/schemas/OwnerChangeEventInfoObject'
+    OwnerChangeEventInfoObject:
+      type: object
+      properties:
+        land_info:
+          $ref: '#/components/schemas/LandDetails'
+        old_owner:
+          $ref: '#/components/schemas/FarmerBaseInfoObject'
+        new_owner:
+          $ref: '#/components/schemas/FarmerBaseInfoObject'
+          
+        
+    FarmerUpdateEventInfo:
+      type: object
+      properties:
+        event_code:
+          type: string
+          example: 'DEMOGRAPHIC_UPDATE'
+        transaction_id:
+          type: string
+          example: 0c96614c-7255-4774-b109-cd53ee859000
+          description: The transaction_id received in request
+        event_data:
+          $ref : '#/components/schemas/FarmerBaseInfoObject'    
+
+    EventResponse:
+      type: object
+      properties:
+        event_status:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/BaseResponse'
+
+  securitySchemes:
+    spmis_auth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
