@@ -276,7 +276,7 @@ paths:
     post:
       tags:
         - Request status
-      summary: ''
+      summary: 'Request status: /status'
       description: ''
       operationId: ''
       parameters:
