@@ -2,15 +2,16 @@
   "signature": "Signature:  namespace=\"dci\", kidId=\"{sender_id}|{unique_key_id}|{algorithm}\", algorithm=\"ed25519\", created=\"1606970629\", expires=\"1607030629\", headers=\"(created) (expires) digest\", signature=\"Base64(signing content)",
   "headers": {
     "version": "1.0.0",
-    "message_id": "0c96614c-7255-4774-b109-cd53ee851769",
-    "message_ts": "2023-07-19T12:15:04.555Z",
-    "sender_id": "sp-system",
+    "message_id": "123456789020211216223812",
+    "message_ts": "2022-12-04T18:01:07+00:00",
+    "sender_id": "10089",
     "receiver_id": "crvs",
     "action": "search",
-    "total_count": "1",
-    "encrypted": false,
-    "async": false,
-    "callback_endpoint": ""
+    "total_count": 10,
+    "is_encrypted": true,
+    "encryption_algorithm": "DH-2048",
+    "async": true,
+    "callbackendpoint": "https://{server_url}/on-search"
   },
   "message": {
     "transaction_id": "",
@@ -24,20 +25,14 @@
             "identifier": [
               {
                 "identifier_type": "UIN",
-                "identifier_value": "345678916"
-              },{
-                "identifier_type": "DRN",
-                "identifier_value": "DRN20221211"
-              }
-            ],
-            "name": {              
-              "family_name": "Doe",
-              "given_name": "John",
-              "middle_name": "Jackson",
-              "suffix": "Jr",
-              "prefix": "Mr."
-            },
-            "date_of_death":"2022-12-12T21:30:00Z"
+                "identifier_value": "345678917"
+              } 
+            ], 
+            "date_of_divorce":"2022-12-12T21:30:00Z",
+            "marital_status": {
+              "code": "D",
+              "display_text": "Divorced"
+            }
           }
         ],
         "pagination": {

@@ -46,7 +46,6 @@ paths:
         - Search API
       summary: 'Search request: /search'
       description: 'The async behaviour of APIs will send resposne to /on-search end point, so to receive data /on-search end point to be implemented at data receiver end.'
-
       parameters:
         - $ref: "./headers.yaml#/components/parameters/authorization"
       requestBody:
@@ -321,7 +320,6 @@ paths:
         - Request status
       summary: 'Request status: /status'
       description: ''
-      operationId: ''
       parameters:
         - $ref: "./headers.yaml#/components/parameters/authorization"
       requestBody:
@@ -373,7 +371,6 @@ paths:
         - Request status
       summary: 'Request status: /on-status'
       description: ''
-      operationId: ''
       parameters:
         - $ref: "./headers.yaml#/components/parameters/authorization"
       requestBody:
