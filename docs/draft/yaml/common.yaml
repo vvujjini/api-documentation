@@ -513,7 +513,16 @@ components:
       required:
         - attribute_name
         - attribute_value          
-     
+    CQueryRecord:
+      description: |
+        1. Generic query record to query civil registry
+      properties:
+        identifier:
+          $ref: '#/components/schemas/Identifiers'
+        registration_number:
+          description: Registration number
+          type: string
+          example: '123456'
     CRRecord:
       description: |
         1. Civil registry specific extensions based on entities derived from OpenID PersonInfo and PersonAdditionalInfo entities
@@ -697,7 +706,10 @@ components:
         - name
         - relationship
     ExpressionWithCondition:
-      description: Expression with a condition
+      description: | 
+        1. Expression with a condition
+        2. Allow querying registry columns as custom attributes. 
+        3. Calling system can refer to the standard fields defined <here> or custom fields as agreed between the systems
       type: object
       properties:
         expression1:

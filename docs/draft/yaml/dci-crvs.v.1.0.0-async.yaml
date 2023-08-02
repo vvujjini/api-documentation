@@ -471,14 +471,9 @@ components:
         search_criteria:
           type: object
           properties:
-            query:
-              anyOf:
-              - $ref: "./common.yaml#/components/schemas/RegistryRecord"
-              - $ref: "./common.yaml#/components/schemas/CRRecordBirth"
-              - $ref: "./common.yaml#/components/schemas/CRRecordDeath"
-              - $ref: "./common.yaml#/components/schemas/CRRecordUnion"
-            custom_query:
-              $ref: "common.yaml#/components/schemas/ExpressionWithConditionList" 
+            anyOf:
+              - $ref: "common.yaml#/components/schemas/CQueryRecord" 
+              - $ref: "common.yaml#/components/schemas/ExpressionWithConditionList" 
         filter:
           description: Attribute(s) to send in response, 
           items:
