@@ -40,6 +40,71 @@ tags:
   - name: Request status
     description: 'The request status check APIs performs tracing of request'    
 paths:
+  /sync/search:
+    post:
+      tags:
+        - Search API
+      summary: 'Search request: /sync/search'
+      description: |-
+       The search request build up of three section 
+       <br>1) signature 
+       <br>2) headers 
+       <br>3) message
+      parameters:
+        - $ref: "./headers.yaml#/components/parameters/authorization"
+      requestBody:
+        description: Search request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                signature:
+                  $ref: './signature.yaml#/components/schemas/MsgSignature'      
+                header:
+                  allOf:
+                    - $ref: "./headers.yaml#/components/schemas/MessageHeader_V1_0_0"
+                    - properties:
+                        action:
+                          enum:
+                            - sync/search
+                        async:
+                          default: false
+                message:
+                  type: object
+                  description: 'The search data using which registry search to be performed'
+                  anyOf:
+                    - $ref: '#/components/schemas/SearchMessage'
+                    - $ref: './common.yaml#/components/schemas/EncryptedMessage'
+              required: 
+                - headers
+                - message   
+        required: true
+      responses:
+        'default':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'               
+        '400':
+          $ref: './responses.yaml#/components/responses/400'
+        '401':
+          $ref: './responses.yaml#/components/responses/401'
+        '403':
+          $ref: './responses.yaml#/components/responses/403'
+        '404':
+          $ref: './responses.yaml#/components/responses/404'
+        '405':
+          $ref: './responses.yaml#/components/responses/405'
+        '500':
+          $ref: './responses.yaml#/components/responses/500' 
+      security:
+        - x-access-token:
+            - read:search
   /search:
     post:
       tags:
@@ -53,10 +118,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SearchRequest' 
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/SearchRequest'                   
+              type: object
+              properties:
+                signature:
+                  $ref: './signature.yaml#/components/schemas/MsgSignature'  
+                header:
+                  allOf:
+                    - $ref: "./headers.yaml#/components/schemas/MessageHeader_V1_0_0"
+                    - properties:
+                        action:
+                          enum:
+                            - search
+                message:
+                  type: object
+                  description: 'The search data using which registry search to be performed'
+                  anyOf:
+                    - $ref: '#/components/schemas/SearchMessage'
+                    - $ref: './common.yaml#/components/schemas/EncryptedMessage'
+              required: 
+                - headers
+                - message         
           multipart/form-data:
             schema:
               $ref: './common.yaml#/components/schemas/FileUploadRequest'
@@ -318,6 +399,58 @@ paths:
       security:
         - x-access-token:
             - read:search
+  /sync/status:
+    post:
+      tags:
+        - Request status
+      summary: 'Request status: /sync/status'
+      description: ''
+      operationId: ''
+      parameters:
+        - $ref: "./headers.yaml#/components/parameters/authorization"
+      requestBody:
+        description: 'Request to get status info'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestStatusCheckRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/RequestStatusCheckRequest'                   
+          multipart/form-data:
+            schema:
+              $ref: './common.yaml#/components/schemas/FileUploadRequest'
+        required: true
+      responses:
+        'default':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestStatusCheckResponse'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestStatusCheckResponse'     
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary                
+
+        '400':
+          $ref: './responses.yaml#/components/responses/400'
+        '401':
+          $ref: './responses.yaml#/components/responses/401'
+        '403':
+          $ref: './responses.yaml#/components/responses/403'
+        '404':
+          $ref: './responses.yaml#/components/responses/404'
+        '405':
+          $ref: './responses.yaml#/components/responses/405'
+        '500':
+          $ref: './responses.yaml#/components/responses/500'             
+      security:
+        - x-access-token:
+            - read:search
   /status:
     post:
       tags:
@@ -328,7 +461,7 @@ paths:
       parameters:
         - $ref: "./headers.yaml#/components/parameters/authorization"
       requestBody:
-        description: 'Request to un-subscribe'
+        description: 'Request to get status info'
         content:
           application/json:
             schema:
@@ -420,30 +553,6 @@ paths:
 
 components:
   schemas:  
-    SearchRequest:
-      type: object
-      properties:
-        signature:
-          allOf:
-            - $ref: './signature.yaml#/components/schemas/MsgSignature'      
-        headers:
-          allOf:
-            - $ref: './headers.yaml#/components/schemas/CommonHeaders'
-            - $ref: './headers.yaml#/components/schemas/SearchAction'
-            - $ref: './headers.yaml#/components/schemas/TotalCountHeader'
-            - $ref: './headers.yaml#/components/schemas/EncHeaders'
-            - $ref: './headers.yaml#/components/schemas/AsyncHeaders'      
-            - $ref: './headers.yaml#/components/schemas/SearchCallbackHeader'   
-        message:
-          type: object
-          description: 'The search data using which search to be performed'
-          anyOf:
-            - $ref: '#/components/schemas/SearchMessage'
-            - $ref: './common.yaml#/components/schemas/EncryptedMessage'
-      required: 
-        - headers
-        - message
-        - async
     SearchMessage:
       type: object
       properties:
@@ -481,12 +590,8 @@ components:
           properties:
             query:
               anyOf:
-              - $ref: "./common.yaml#/components/schemas/RegistryRecord"
-              - $ref: "./common.yaml#/components/schemas/CRRecordBirth"
-              - $ref: "./common.yaml#/components/schemas/CRRecordDeath"
-              - $ref: "./common.yaml#/components/schemas/CRRecordUnion"
-            custom_query:
-              $ref: "common.yaml#/components/schemas/ExpressionWithConditionList" 
+                - $ref: "common.yaml#/components/schemas/CQueryRecord" 
+                - $ref: "common.yaml#/components/schemas/ExpressionWithConditionList" 
         filter:
           description: Attribute(s) to send in response, 
           items:
@@ -546,6 +651,10 @@ components:
           allOf:
             - $ref: './headers.yaml#/components/schemas/CommonHeaders'
             - $ref: './headers.yaml#/components/schemas/OnSearchAction'
+            - properties:
+                action:
+                  enum:
+                    - on-search
             - $ref: './headers.yaml#/components/schemas/TotalCountHeader'
             - $ref: './headers.yaml#/components/schemas/CompletedCountHeader'  
             - $ref: './headers.yaml#/components/schemas/EncHeaders' 
@@ -568,6 +677,10 @@ components:
           allOf:
             - $ref: './headers.yaml#/components/schemas/CommonHeaders' 
             - $ref: './headers.yaml#/components/schemas/NotifyAction'
+            - properties:
+                action:
+                  enum:
+                    - notify
             - $ref: './headers.yaml#/components/schemas/TotalCountHeader'
             - $ref: './headers.yaml#/components/schemas/CompletedCountHeader'
             - $ref: './headers.yaml#/components/schemas/EncHeaders'   
